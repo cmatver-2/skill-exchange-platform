@@ -1,0 +1,207 @@
+/* src/pages/SkillSearch/SkillSearch.css
+   Styles for the Skill Search page, StudentCard and SearchFilters.
+   Uses only the design tokens defined in src/index.css, so light/dark mode
+   work automatically. Class names are prefixed per component to avoid
+   clashing with other pages (plain CSS imports are global). */
+
+.skill-search {
+  padding: 0 24px 48px;
+  text-align: left;
+}
+
+.skill-search h1 {
+  text-align: center;
+}
+
+.skill-search__intro {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.skill-search__hint {
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.skill-search__bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.skill-search__bar input,
+.skill-search__bar select,
+.search-filters select {
+  font: inherit;
+  color: var(--text-h);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+.skill-search__bar input {
+  flex: 1 1 240px;
+}
+
+.skill-search__bar input:focus,
+.skill-search__bar select:focus,
+.search-filters select:focus {
+  outline: 2px solid var(--accent-border);
+  outline-offset: 1px;
+}
+
+.skill-search__section {
+  margin-top: 40px;
+}
+
+.skill-search__section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.skill-search__empty {
+  padding: 16px 0;
+}
+
+.skill-search__clear {
+  font: inherit;
+  font-size: 16px;
+  color: var(--accent);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.skill-search__skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.skill-search__results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+/* SearchFilters */
+
+.search-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+  margin-top: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--social-bg);
+  font-size: 16px;
+}
+
+.search-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Two classes so this beats `.search-filters label` above. */
+.search-filters .search-filters__checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+}
+
+/* StudentCard */
+
+.student-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.student-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.student-card__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.student-card__name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+.student-card__rating {
+  font-size: 14px;
+}
+
+.student-card__badge {
+  margin-left: auto;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  white-space: nowrap;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+}
+
+.student-card__proficiency strong {
+  color: var(--text-h);
+}
+
+.student-card__skills {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  margin: 0;
+}
+
+.student-card__skills dt {
+  color: var(--text-h);
+}
+
+.student-card__skills dd {
+  margin: 0;
+}
+
+.student-card__exchange {
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: var(--accent-bg);
+}
+
+.student-card__exchange strong {
+  color: var(--text-h);
+}
+
+.student-card__link {
+  margin-top: auto;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.student-card__link:hover {
+  text-decoration: underline;
+}
