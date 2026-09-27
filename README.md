@@ -1,4 +1,3 @@
-=======
 # 🎓 Skill Exchange Platform
 
 A student-to-student learning platform that connects people based on the skills they can teach and the skills they want to learn.
@@ -14,6 +13,7 @@ A student-to-student learning platform that connects people based on the skills 
 - [Main Parts of the Website](#main-parts-of-the-website)
 - [Tech Stack](#tech-stack)
 - [Project Architecture](#project-architecture)
+- [Requests & Sessions Module](#requests--sessions-module)
 - [Team & Work Split](#team--work-split)
 - [Final Website Flow](#final-website-flow)
 - [Common Topics Everyone Should Know](#common-topics-everyone-should-know)
@@ -105,6 +105,56 @@ skill-exchange-platform/
 ```
 
 Since there's no backend, all "database" data lives in `src/data/` as mock arrays. A shared `AppContext` keeps state (current user, requests, sessions) in sync across the app so the flow — send request → accept → schedule → complete → review — actually works during a session, and can optionally persist via `localStorage`.
+
+---
+
+## Requests & Sessions Module
+
+The Requests and Sessions module is owned by **Derick**. It implements the middle of the skill-exchange workflow using React state and the shared mock data.
+
+### Request features
+
+- Send a learning request to a student who teaches the selected skill
+- Validate the student, skill, and message fields
+- Prevent duplicate pending requests for the same student and skill
+- View incoming and outgoing requests separately
+- Accept or reject incoming requests
+- Track pending, accepted, and rejected statuses
+- Open session scheduling directly from an accepted request
+
+### Session features
+
+- Schedule an accepted request using a date, time, duration, and location
+- Prevent sessions from being scheduled in the past
+- View upcoming and completed sessions separately
+- Show whether the current user is teaching or learning
+- Open online meeting links when available
+- Mark an upcoming session as completed
+- Continue to the review page after completing a session
+
+### Module files
+
+```text
+src/pages/Requests/index.jsx       # Request form, lists, and status actions
+src/pages/Requests/Requests.css    # Responsive request-page styling
+src/pages/Sessions/index.jsx       # Scheduling and session management
+src/pages/Sessions/Sessions.css    # Responsive session-page styling
+src/data/requests.js               # Sample request records
+src/data/sessions.js               # Sample session records
+src/context/AppContext.jsx         # Shared request/session state
+```
+
+All updates are stored in `AppContext` for the current browser session. Refreshing the page restores the original mock data because this project intentionally has no backend or database.
+
+### Test the complete flow
+
+1. Open **Requests** from the navigation bar.
+2. Accept the pending UI Design request from Sneha Kapoor.
+3. Select **Schedule session** on the accepted request.
+4. Enter a future date, time, duration, and meeting location.
+5. Submit the form and confirm the session appears under **Upcoming**.
+6. Select **Mark as completed**.
+7. Open the **Completed** tab and continue to the review page if needed.
 
 ---
 
@@ -202,7 +252,7 @@ Home → Search Skills → View Profile → Send Request → Accept → Schedule
 
 ```bash
 # Clone the repo
-git clone https://github.com/<org>/skill-exchange-platform.git
+git clone https://github.com/cmatver-2/skill-exchange-platform.git
 cd skill-exchange-platform
 
 # Install dependencies
@@ -229,4 +279,3 @@ npm run dev
 ---
 
 <p align="center">Built with ❤️ by Chris, Dane, Derick, Govind & Daniel</p>
->>>>>>> e534745c0478ad539f473bd624205cdd2121346f
