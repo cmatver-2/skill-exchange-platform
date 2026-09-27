@@ -1,0 +1,41 @@
+/* src/components/SkillCard.css
+   Styles for SkillCard. Uses the design tokens from src/index.css. */
+
+.skill-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font: inherit;
+  text-align: left;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.skill-card:hover {
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow);
+}
+
+.skill-card--selected {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.skill-card__name {
+  color: var(--text-h);
+  font-weight: 500;
+}
+
+.skill-card__category,
+.skill-card__meta {
+  font-size: 14px;
+}
+
+.skill-card__wanted {
+  color: var(--accent);
+}
