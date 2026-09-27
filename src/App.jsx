@@ -1,4 +1,3 @@
-// src/App.jsx
 import { BrowserRouter } from "react-router-dom";
 import { AppProvider } from "./context/AppContext";
 import Navbar from "./components/layout/Navbar";

@@ -1,9 +1,8 @@
-// src/components/layout/Navbar.jsx
 import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav>
+    <nav style={{ display: "flex", gap: "1rem", padding: "1rem", borderBottom: "1px solid #ccc" }}>
       <Link to="/">Home</Link>
       <Link to="/search">Search</Link>
       <Link to="/dashboard">Dashboard</Link>

@@ -1,4 +1,3 @@
-// src/context/AppContext.jsx
 import { createContext, useContext, useState } from "react";
 import { users } from "../data/users";
 import { requests as initialRequests } from "../data/requests";
