@@ -7,7 +7,7 @@ import { reviews as initialReviews } from "../data/reviews";
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(users[0]); // mock logged-in user
+  const [currentUser, setCurrentUser] = useState(users[1]); // mock logged-in user
   const [requests, setRequests] = useState(initialRequests);
   const [sessions, setSessions] = useState(initialSessions);
   const [reviews, setReviews] = useState(initialReviews);
