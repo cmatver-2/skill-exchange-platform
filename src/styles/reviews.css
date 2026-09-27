@@ -1,0 +1,115 @@
+.reviews-page {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: Arial, sans-serif;
+}
+
+.reviews-page h1 {
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+.reviews-section {
+  background: white;
+  border: 1px solid #e1e5ea;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+.reviews-section h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.review-form-card {
+  background: #f8f9fb;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.review-form-card:last-child {
+  margin-bottom: 0;
+}
+
+.review-form-card h3 {
+  margin-top: 0;
+}
+
+.review-form-card p {
+  color: #555;
+}
+
+.review-form-card label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.review-form-card select,
+.review-form-card textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.review-form-card textarea {
+  resize: vertical;
+}
+
+.review-form-card button {
+  margin-top: 15px;
+  padding: 11px 18px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.review-form-card button:hover {
+  background: #1d4ed8;
+}
+
+.already-reviewed {
+  color: #15803d !important;
+  font-weight: bold;
+  background: #dcfce7;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* Received reviews */
+
+.received-review {
+  padding: 18px;
+  background: #f8f9fb;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.received-review:last-child {
+  margin-bottom: 0;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.received-review p {
+  color: #444;
+  line-height: 1.5;
+}
+
+.received-review small {
+  color: #777;
+}
