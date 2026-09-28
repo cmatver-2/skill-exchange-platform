@@ -40,4 +40,13 @@ export const requests = [
     status: "rejected",
     createdAt: "2026-09-18T16:45:00Z",
   },
+  {
+    id: 5,
+    fromUserId: 3,   // Sneha (learner)
+    toUserId: 2,     // Arjun (teacher)
+    skillId: 6,      // UI Design
+    message: "Could you help me understand the basics of UI design?",
+    status: "pending",
+    createdAt: "2026-09-24T10:20:00Z",
+  },
 ];
