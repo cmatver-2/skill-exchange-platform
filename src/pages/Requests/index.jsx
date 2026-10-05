@@ -213,7 +213,7 @@ function Requests() {
     activeView === "incoming" ? incomingRequests : outgoingRequests;
 
   return (
-    <main className="requests-page">
+    <div className="requests-page">
       <header className="requests-hero">
         <div>
           <p className="requests-eyebrow">Learn together</p>
@@ -347,7 +347,7 @@ function Requests() {
           </div>
         </section>
       </div>
-    </main>
+    </div>
   );
 }
 

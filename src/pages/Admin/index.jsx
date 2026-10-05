@@ -11,11 +11,10 @@ function Admin() {
   const [userSearch, setUserSearch] = useState("");
   const [skillSearch, setSkillSearch] = useState("");
 
-  const studentUsers = users.filter((user) => user.role === "student");
-
-  const getSkillName = (skillId) => {
-    return skills.find((skill) => skill.id === skillId)?.name || "Unknown";
-  };
+  const studentUsers = useMemo(
+    () => users.filter((user) => user.role === "student"),
+    []
+  );
 
   const getTeacherCount = (skillId) => {
     return studentUsers.filter((user) =>
@@ -41,7 +40,7 @@ function Admin() {
         user.name.toLowerCase().includes(query) ||
         user.bio.toLowerCase().includes(query)
     );
-  }, [userSearch]);
+  }, [userSearch, studentUsers]);
 
   const filteredSkills = useMemo(() => {
     const query = skillSearch.toLowerCase().trim();
@@ -74,7 +73,7 @@ function Admin() {
   ).length;
 
   return (
-    <main className="admin-page">
+    <div className="admin-page">
       {/* Header */}
       <section className="admin-header">
         <div>
@@ -305,7 +304,7 @@ function Admin() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
 

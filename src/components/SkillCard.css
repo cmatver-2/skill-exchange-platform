@@ -1,41 +1,57 @@
 /* src/components/SkillCard.css
-   Styles for SkillCard. Uses the design tokens from src/index.css. */
+   Modern styles for SkillCard matching the design tokens. */
 
 .skill-card {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  justify-content: space-between;
+  gap: 0.35rem;
   font: inherit;
   text-align: left;
-  color: var(--text);
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 14px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.15rem;
   cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: all var(--transition-fast);
+  min-height: 90px;
 }
 
 .skill-card:hover {
-  border-color: var(--accent-border);
-  box-shadow: var(--shadow);
+  border-color: var(--color-primary-border);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
 }
 
 .skill-card--selected {
-  border-color: var(--accent);
-  background: var(--accent-bg);
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
 }
 
 .skill-card__name {
-  color: var(--text-h);
-  font-weight: 500;
+  color: var(--color-text-heading);
+  font-weight: 750;
+  font-size: 1.05rem;
 }
 
-.skill-card__category,
+.skill-card__category {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+}
+
 .skill-card__meta {
-  font-size: 14px;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  margin-top: 0.25rem;
 }
 
 .skill-card__wanted {
-  color: var(--accent);
+  color: var(--color-secondary);
+  font-weight: 700;
 }

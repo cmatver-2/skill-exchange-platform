@@ -1,207 +1,328 @@
 /* src/pages/SkillSearch/SkillSearch.css
-   Styles for the Skill Search page, StudentCard and SearchFilters.
-   Uses only the design tokens defined in src/index.css, so light/dark mode
-   work automatically. Class names are prefixed per component to avoid
-   clashing with other pages (plain CSS imports are global). */
+   Modern styling for the Skill Search page, StudentCard, and SearchFilters. */
 
 .skill-search {
-  padding: 0 24px 48px;
+  max-width: 1200px;
+  margin: 2.5rem auto 5rem;
+  padding: 0 1.5rem;
   text-align: left;
 }
 
-.skill-search h1 {
-  text-align: center;
+.skill-search-header {
+  margin-bottom: 2rem;
+}
+
+.skill-search-header h1 {
+  font-size: 2.25rem;
+  font-weight: 850;
+  margin-top: 0.25rem;
 }
 
 .skill-search__intro {
-  text-align: center;
-  margin-bottom: 24px;
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+  margin-top: 0.25rem;
 }
 
-.skill-search__hint {
-  margin-bottom: 16px;
-  font-size: 16px;
+/* Search Bar & Filters */
+.skill-search__controls {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2.5rem;
 }
 
 .skill-search__bar {
   display: flex;
-  gap: 12px;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
-.skill-search__bar input,
-.skill-search__bar select,
-.search-filters select {
-  font: inherit;
-  color: var(--text-h);
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 8px 12px;
-}
-
 .skill-search__bar input {
-  flex: 1 1 240px;
+  flex: 1 1 300px;
+  padding: 0.75rem 1.15rem;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--color-text-heading);
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: all var(--transition-fast);
 }
 
-.skill-search__bar input:focus,
-.skill-search__bar select:focus,
-.search-filters select:focus {
-  outline: 2px solid var(--accent-border);
-  outline-offset: 1px;
+.skill-search__bar input:focus {
+  background: var(--color-surface);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
+.skill-search__bar select {
+  padding: 0.75rem 1.15rem;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-heading);
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  outline: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.skill-search__bar select:focus {
+  border-color: var(--color-primary);
+}
+
+/* Sections */
 .skill-search__section {
-  margin-top: 40px;
+  margin-top: 3.5rem;
+}
+
+.skill-search__section h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
 }
 
 .skill-search__section-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .skill-search__empty {
-  padding: 16px 0;
+  padding: 2.5rem 1rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  font-size: 0.95rem;
 }
 
 .skill-search__clear {
-  font: inherit;
-  font-size: 16px;
-  color: var(--accent);
-  background: none;
-  border: none;
-  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+  border: 1px solid var(--color-primary-border);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.8rem;
   cursor: pointer;
-  text-decoration: underline;
+  transition: all var(--transition-fast);
+}
+
+.skill-search__clear:hover {
+  background: var(--color-primary);
+  color: #ffffff;
 }
 
 .skill-search__skills {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
-  margin-top: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
 .skill-search__results {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
-  margin-top: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.25rem;
 }
 
-/* SearchFilters */
-
+/* SearchFilters Component */
 .search-filters {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  gap: 16px;
-  margin-top: 12px;
-  padding: 12px 16px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--social-bg);
-  font-size: 16px;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  font-size: 0.85rem;
 }
 
 .search-filters label {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0.4rem;
+  font-weight: 700;
+  color: var(--color-text-heading);
 }
 
-/* Two classes so this beats `.search-filters label` above. */
+.search-filters select {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--color-text-heading);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  outline: none;
+}
+
 .search-filters .search-filters__checkbox {
   flex-direction: row;
   align-items: center;
-  gap: 8px;
-  padding-bottom: 8px;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  cursor: pointer;
 }
 
-/* StudentCard */
-
+/* StudentCard Component */
 .student-card {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 16px;
+  justify-content: space-between;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.student-card--mutual {
+  border: 2px solid var(--color-primary-border);
+  box-shadow: 0 4px 18px rgba(99, 102, 241, 0.08);
+}
+
+.student-card__mutual-ribbon {
+  background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 850;
+  padding: 0.35rem 0.85rem;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  align-self: flex-start;
+  margin-top: -1.5rem;
+  margin-left: -0.5rem;
+  margin-bottom: 0.25rem;
+  box-shadow: var(--shadow-xs);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .student-card__header {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.85rem;
 }
 
 .student-card__avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
   object-fit: cover;
+  border: 2px solid var(--color-border);
+  box-shadow: var(--shadow-xs);
+}
+
+.student-card__title-group {
+  flex: 1;
 }
 
 .student-card__name {
   margin: 0;
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--text-h);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--color-text-heading);
+}
+
+.student-card__meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .student-card__rating {
-  font-size: 14px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--color-warning);
 }
 
-.student-card__badge {
-  margin-left: auto;
-  padding: 2px 10px;
-  border-radius: 999px;
-  font-size: 13px;
-  white-space: nowrap;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 1px solid var(--accent-border);
+.student-card__proficiency-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
 }
 
-.student-card__proficiency strong {
-  color: var(--text-h);
-}
-
-.student-card__skills {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 4px 12px;
+.student-card__bio {
+  font-size: 0.85rem;
+  color: var(--color-text);
+  line-height: 1.55;
   margin: 0;
 }
 
-.student-card__skills dt {
-  color: var(--text-h);
+.student-card__skills-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border-subtle);
+  font-size: 0.8rem;
 }
 
-.student-card__skills dd {
+.skill-group {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.skill-label {
+  font-weight: 750;
+  color: var(--color-text-muted);
+  min-width: 95px;
+}
+
+.skill-values {
+  color: var(--color-text-heading);
+  font-weight: 600;
+}
+
+.student-card__exchange-banner {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-primary-light);
+  border: 1px solid var(--color-primary-border);
+  font-size: 0.8rem;
+  color: var(--color-primary-active);
+}
+
+.student-card__exchange-banner p {
   margin: 0;
 }
 
-.student-card__exchange {
-  padding: 8px 12px;
-  border-radius: 6px;
-  background: var(--accent-bg);
+.student-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border-subtle);
 }
 
-.student-card__exchange strong {
-  color: var(--text-h);
+.student-card__footer .btn {
+  flex: 1;
 }
 
-.student-card__link {
-  margin-top: auto;
-  color: var(--accent);
-  text-decoration: none;
-}
-
-.student-card__link:hover {
-  text-decoration: underline;
+@media (max-width: 768px) {
+  .skill-search__results {
+    grid-template-columns: 1fr;
+  }
 }

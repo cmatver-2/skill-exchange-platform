@@ -248,7 +248,7 @@ function Sessions() {
     activeView === "upcoming" ? upcomingSessions : completedSessions;
 
   return (
-    <main className="sessions-page">
+    <div className="sessions-page">
       <header className="sessions-hero">
         <div>
           <p className="sessions-eyebrow">Share your time</p>
@@ -411,7 +411,7 @@ function Sessions() {
           </div>
         </section>
       </div>
-    </main>
+    </div>
   );
 }
 

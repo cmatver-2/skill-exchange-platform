@@ -19,7 +19,6 @@ function Profile() {
     : users.find((u) => u.id === Number(userId));
 
   const [isEditing, setIsEditing] = useState(false);
-
   const [name, setName] = useState(user?.name || "");
   const [bio, setBio] = useState(user?.bio || "");
   const [interests, setInterests] = useState(
@@ -27,7 +26,15 @@ function Profile() {
   );
 
   if (!user) {
-    return <h1>User not found</h1>;
+    return (
+      <div className="profile-page">
+        <div className="card text-center py-12">
+          <h2>User not found</h2>
+          <p className="text-muted">The student profile you are looking for does not exist.</p>
+          <Link to="/" className="btn btn-primary mt-4">Return Home</Link>
+        </div>
+      </div>
+    );
   }
 
   const userReviews = reviews.filter(
@@ -37,6 +44,24 @@ function Profile() {
   const getSkillName = (skillId) => {
     const skill = skills.find((skill) => skill.id === skillId);
     return skill ? skill.name : "Unknown Skill";
+  };
+
+  const getSkillCategory = (skillId) => {
+    const skill = skills.find((skill) => skill.id === skillId);
+    return skill ? skill.category : "General";
+  };
+
+  const getProficiencyClass = (level) => {
+    switch (level?.toLowerCase()) {
+      case "advanced":
+        return "badge-success";
+      case "intermediate":
+        return "badge-primary";
+      case "beginner":
+        return "badge-warning";
+      default:
+        return "badge-neutral";
+    }
   };
 
   const handleSave = (event) => {
@@ -63,177 +88,252 @@ function Profile() {
     setIsEditing(false);
   };
 
+  const isSelf = user.id === currentUser.id;
+
   return (
     <div className="profile-page">
 
-      {/* Profile Header */}
-      <div className="profile-header">
-        <img src={user.avatar} alt={user.name} />
+      {/* Profile Header Hero Card */}
+      <div className="profile-hero-card">
+        <div className="profile-hero-banner"></div>
 
-        <div className="profile-header-info">
-          <h1>{user.name}</h1>
-          <p className="profile-bio">{user.bio}</p>
+        <div className="profile-hero-body">
+          <div className="profile-avatar-wrapper">
+            <img src={user.avatar} alt={user.name} className="profile-avatar" />
+            <span className="profile-status-dot" title="Active on campus"></span>
+          </div>
 
-          {user.id === currentUser.id && (
-            <button
-              className="edit-profile-button"
-              onClick={() => setIsEditing(true)}
-            >
-              Edit Profile
-            </button>
-          )}
+          <div className="profile-hero-info">
+            <div className="profile-name-row">
+              <h1>{user.name}</h1>
+              <span className="badge badge-primary">{user.role}</span>
+            </div>
+
+            <p className="profile-bio-text">{user.bio}</p>
+
+            <div className="profile-meta-row">
+              <span className="profile-rating-pill">
+                ⭐ {user.rating ? `${user.rating.toFixed(1)} / 5.0` : "No ratings"}
+              </span>
+              <span>•</span>
+              <span className="profile-meta-text">
+                {user.skillsTaught.length} skills teaching · {user.skillsWanted.length} skills learning
+              </span>
+            </div>
+          </div>
+
+          <div className="profile-hero-actions">
+            {isSelf ? (
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={() => setIsEditing(true)}
+              >
+                ✏️ Edit Profile
+              </button>
+            ) : (
+              <Link to="/requests" className="btn btn-primary">
+                📩 Propose Skill Swap
+              </Link>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Edit Profile Form */}
-      {isEditing && user.id === currentUser.id && (
-        <div className="profile-section edit-profile-section">
-          <h2>Edit Profile</h2>
+      {/* Edit Profile Form Modal/Section */}
+      {isEditing && isSelf && (
+        <div className="card profile-edit-card fade-in">
+          <div className="panel-header">
+            <div>
+              <h2>Edit Profile Information</h2>
+              <p>Update your display name, bio, and topics of interest.</p>
+            </div>
+          </div>
 
-          <form onSubmit={handleSave}>
+          <form onSubmit={handleSave} className="profile-edit-form">
+            <div className="form-group">
+              <label htmlFor="profile-name" className="form-label">
+                Full Name
+              </label>
+              <input
+                id="profile-name"
+                type="text"
+                className="form-input"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                required
+              />
+            </div>
 
-            <label htmlFor="profile-name">
-              Name
-            </label>
+            <div className="form-group">
+              <label htmlFor="profile-bio" className="form-label">
+                Short Bio
+              </label>
+              <textarea
+                id="profile-bio"
+                className="form-textarea"
+                value={bio}
+                onChange={(event) => setBio(event.target.value)}
+                rows="3"
+                required
+              />
+            </div>
 
-            <input
-              id="profile-name"
-              type="text"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              required
-            />
-
-            <label htmlFor="profile-bio">
-              Bio
-            </label>
-
-            <textarea
-              id="profile-bio"
-              value={bio}
-              onChange={(event) => setBio(event.target.value)}
-              rows="4"
-              required
-            />
-
-            <label htmlFor="profile-interests">
-              Interests
-            </label>
-
-            <input
-              id="profile-interests"
-              type="text"
-              value={interests}
-              onChange={(event) => setInterests(event.target.value)}
-              placeholder="Example: Coding, Music, Gaming"
-            />
+            <div className="form-group">
+              <label htmlFor="profile-interests" className="form-label">
+                Interests (comma separated)
+              </label>
+              <input
+                id="profile-interests"
+                type="text"
+                className="form-input"
+                value={interests}
+                onChange={(event) => setInterests(event.target.value)}
+                placeholder="Example: Coding, Design, Chess, Music"
+              />
+            </div>
 
             <div className="edit-buttons">
-              <button type="submit" className="save-button">
+              <button type="submit" className="btn btn-primary">
                 Save Changes
               </button>
-
               <button
                 type="button"
-                className="cancel-button"
+                className="btn btn-secondary"
                 onClick={handleCancel}
               >
                 Cancel
               </button>
             </div>
-
           </form>
         </div>
       )}
 
-      {/* Interests */}
-      <div className="profile-section">
-        <h2>Interests</h2>
-
-        {user.interests.length === 0 ? (
-          <p>No interests added.</p>
-        ) : (
-          <ul className="interest-list">
-            {user.interests.map((interest) => (
-              <li key={interest}>{interest}</li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      {/* Skills Taught */}
-      <div className="profile-section">
-        <h2>Skills I Can Teach</h2>
-
-        <div className="skill-list">
-          {user.skillsTaught.map((skill) => (
-            <div className="skill-item" key={skill.skillId}>
-              <span>{getSkillName(skill.skillId)}</span>
-
-              <span className="proficiency">
-                {skill.proficiency}
-              </span>
+      {/* Skills Split Row */}
+      <div className="profile-grid-two-cols">
+        
+        {/* Skills I Can Teach */}
+        <div className="card profile-card">
+          <div className="profile-card-header">
+            <span className="profile-card-icon bg-indigo">🎓</span>
+            <div>
+              <h3>Skills I Can Teach</h3>
+              <p>Offerings available for peer sessions.</p>
             </div>
-          ))}
+          </div>
+
+          <div className="profile-skills-list">
+            {user.skillsTaught.length === 0 ? (
+              <p className="empty-subtext">No teaching skills listed yet.</p>
+            ) : (
+              user.skillsTaught.map((skill) => (
+                <div className="profile-skill-item" key={skill.skillId}>
+                  <div>
+                    <span className="profile-skill-name">{getSkillName(skill.skillId)}</span>
+                    <span className="profile-skill-cat">{getSkillCategory(skill.skillId)}</span>
+                  </div>
+                  <span className={`badge ${getProficiencyClass(skill.proficiency)}`}>
+                    {skill.proficiency}
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* Skills Wanted */}
-      <div className="profile-section">
-        <h2>Skills I Want to Learn</h2>
-
-        <div className="skill-list">
-          {user.skillsWanted.map((skill) => (
-            <div className="skill-item" key={skill.skillId}>
-              <span>{getSkillName(skill.skillId)}</span>
-
-              <span className="proficiency">
-                {skill.proficiency}
-              </span>
+        {/* Skills I Want to Learn */}
+        <div className="card profile-card">
+          <div className="profile-card-header">
+            <span className="profile-card-icon bg-purple">🎯</span>
+            <div>
+              <h3>Skills I Want to Learn</h3>
+              <p>Topics looking for peer mentorship.</p>
             </div>
-          ))}
+          </div>
+
+          <div className="profile-skills-list">
+            {user.skillsWanted.length === 0 ? (
+              <p className="empty-subtext">No wanted skills listed yet.</p>
+            ) : (
+              user.skillsWanted.map((skill) => (
+                <div className="profile-skill-item" key={skill.skillId}>
+                  <div>
+                    <span className="profile-skill-name">{getSkillName(skill.skillId)}</span>
+                    <span className="profile-skill-cat">{getSkillCategory(skill.skillId)}</span>
+                  </div>
+                  <span className={`badge ${getProficiencyClass(skill.proficiency)}`}>
+                    {skill.proficiency} Goal
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
         </div>
+
       </div>
 
-      {/* Rating */}
-      <div className="profile-section">
-        <h2>Rating</h2>
-
-        {user.rating === null ? (
-          <p>No rating yet.</p>
-        ) : (
-          <p className="rating">
-            ⭐ {user.rating} / 5
-          </p>
-        )}
-      </div>
-
-      {/* Reviews */}
-      <div className="profile-section">
-        <h2>Reviews</h2>
-
-        {userReviews.length === 0 ? (
-          <p>No reviews yet.</p>
-        ) : (
-          userReviews.map((review) => (
-            <div className="review" key={review.id}>
-              <p>
-                ⭐ {review.rating} / 5
-              </p>
-
-              <p>{review.comment}</p>
+      {/* Interests & Reviews Grid */}
+      <div className="profile-grid-two-cols">
+        
+        {/* Interests */}
+        <div className="card profile-card">
+          <div className="profile-card-header">
+            <span className="profile-card-icon bg-amber">💡</span>
+            <div>
+              <h3>Interests & Passions</h3>
+              <p>Topics for casual icebreaking and networking.</p>
             </div>
-          ))
-        )}
+          </div>
+
+          {user.interests.length === 0 ? (
+            <p className="empty-subtext">No interests added yet.</p>
+          ) : (
+            <div className="profile-interests-cloud">
+              {user.interests.map((interest) => (
+                <span key={interest} className="interest-tag">
+                  {interest}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Student Reviews */}
+        <div className="card profile-card">
+          <div className="profile-card-header">
+            <span className="profile-card-icon bg-emerald">⭐</span>
+            <div>
+              <h3>Peer Reviews ({userReviews.length})</h3>
+              <p>Feedback from completed learning sessions.</p>
+            </div>
+          </div>
+
+          <div className="profile-reviews-list">
+            {userReviews.length === 0 ? (
+              <p className="empty-subtext">No peer reviews received yet.</p>
+            ) : (
+              userReviews.map((review) => (
+                <div className="profile-review-card" key={review.id}>
+                  <div className="profile-review-header">
+                    <span className="review-stars">
+                      {"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}
+                    </span>
+                    <span className="review-rating-num">{review.rating} / 5</span>
+                  </div>
+                  <p className="review-comment-text">“{review.comment}”</p>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
       </div>
 
-      {/* Dashboard */}
-      <Link
-        className="dashboard-link"
-        to="/dashboard"
-      >
-        Go to Dashboard
-      </Link>
+      <div className="profile-bottom-nav">
+        <Link className="btn btn-secondary" to="/dashboard">
+          ← Return to Dashboard
+        </Link>
+      </div>
 
     </div>
   );
