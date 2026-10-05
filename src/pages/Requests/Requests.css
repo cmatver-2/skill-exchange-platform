@@ -1,320 +1,406 @@
-/* ==========================================================================
-   SkillSwap — Modern Learning Requests Styles
-   ========================================================================== */
+/* Requests Page */
 
 .requests-page {
-  max-width: 1200px;
-  margin: 2.5rem auto 5rem;
-  padding: 0 1.5rem;
-  font-family: var(--font-sans);
-  color: var(--color-text);
+  --requests-ink: #f1f1f3;
+  --requests-muted: #9a9ba3;
+
+  --requests-accent: #c084fc;
+  --requests-accent-dark: #d8a8ff;
+  --requests-accent-soft: #25202d;
+
+  --requests-line: #303033;
+  --requests-surface: #181e20;
+
+  padding: 48px 34px 72px;
+  color: var(--requests-ink);
   text-align: left;
+
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(192, 132, 252, 0.12),
+      transparent 35%
+    ),
+    #111416;
+
+  flex: 1;
 }
 
-/* Hero */
+/* =========================================================
+   HERO
+   ========================================================= */
+
 .requests-hero {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 2rem;
-  margin-bottom: 2.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--color-border);
+  gap: 32px;
+  max-width: 1040px;
+  margin: 0 auto 32px;
 }
 
 .requests-eyebrow {
-  margin: 0 0 0.35rem;
-  color: var(--color-primary);
-  font-size: 0.75rem;
+  margin-bottom: 8px;
+  color: var(--requests-accent);
+  font-size: 0.78rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 .requests-hero h1 {
-  margin: 0 0 0.35rem;
-  font-size: 2.25rem;
-  font-weight: 850;
-  color: var(--color-text-heading);
+  margin: 0 0 10px;
+  color: var(--requests-ink);
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  font-weight: 750;
+  letter-spacing: -0.055em;
+  line-height: 1;
 }
 
 .requests-hero > div > p:last-child {
-  color: var(--color-text-muted);
-  font-size: 1rem;
-  margin: 0;
+  max-width: 630px;
+  color: var(--requests-muted);
 }
 
 .requests-hero__summary {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem 1.5rem;
-  border: 1px solid var(--color-warning-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-warning-bg);
-  box-shadow: var(--shadow-sm);
-  text-align: center;
-  flex-shrink: 0;
+  min-width: 150px;
+  padding: 18px 20px;
+  border: 1px solid rgba(192, 132, 252, 0.22);
+  border-radius: 16px;
+  background: #181e20;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.requests-hero__summary strong,
+.requests-hero__summary span {
+  display: block;
 }
 
 .requests-hero__summary strong {
-  font-size: 1.85rem;
-  font-weight: 850;
-  color: var(--color-warning-text);
+  margin-bottom: 3px;
+  color: var(--requests-accent);
+  font-size: 1.8rem;
   line-height: 1;
 }
 
 .requests-hero__summary span {
-  font-size: 0.72rem;
-  font-weight: 750;
-  color: var(--color-warning-text);
-  margin-top: 0.25rem;
-  text-transform: uppercase;
+  color: var(--requests-muted);
+  font-size: 0.75rem;
 }
 
-/* 2-Column Layout */
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+
 .requests-layout {
   display: grid;
-  grid-template-columns: minmax(300px, 1fr) minmax(440px, 1.6fr);
-  gap: 2rem;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(400px, 1.35fr);
+  gap: 24px;
+  max-width: 1040px;
+  margin: 0 auto;
   align-items: start;
 }
 
+/* =========================================================
+   PANELS
+   ========================================================= */
+
 .request-panel {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-card);
+  border: 1px solid var(--requests-line);
+  border-radius: 22px;
+  background: var(--requests-surface);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18);
   overflow: hidden;
 }
 
 .request-panel--form {
   position: sticky;
-  top: 90px;
+  top: 24px;
 }
 
 .request-panel__heading {
   display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  padding: 1.5rem 1.75rem;
-  border-bottom: 1px solid var(--color-border-subtle);
-  background: var(--color-bg);
-}
-
-.request-panel__step {
-  display: flex;
-  width: 32px;
-  height: 32px;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  color: #ffffff;
-  background: var(--color-primary);
-  font-size: 0.85rem;
-  font-weight: 800;
-  flex-shrink: 0;
+  gap: 14px;
+  padding: 24px 24px 20px;
+  border-bottom: 1px solid var(--requests-line);
 }
 
 .request-panel__heading h2 {
-  margin: 0;
+  margin: 0 0 4px;
+  color: var(--requests-ink);
   font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--color-text-heading);
+  font-weight: 750;
 }
 
 .request-panel__heading p {
-  margin: 0.15rem 0 0;
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
+  color: var(--requests-muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
 }
 
-/* Form */
+.request-panel__step {
+  display: grid;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 10px;
+  color: var(--requests-accent-dark);
+  background: var(--requests-accent-soft);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
 .request-form {
   display: flex;
   flex-direction: column;
-  padding: 1.75rem;
+  padding: 22px 24px 26px;
 }
 
 .request-form label {
-  margin: 0 0 0.4rem;
-  color: var(--color-text-heading);
-  font-size: 0.8rem;
-  font-weight: 700;
+  margin: 0 0 7px;
+  color: #dce4e5;
+  font-size: 0.76rem;
+  font-weight: 750;
 }
 
 .request-form select,
 .request-form textarea {
   width: 100%;
   box-sizing: border-box;
-  margin-bottom: 1.25rem;
-  padding: 0.75rem 1rem;
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-md);
-  color: var(--color-text-heading);
-  background: var(--color-bg);
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
+  margin-bottom: 17px;
+  border: 1px solid #3a4548;
+  border-radius: 11px;
+  color: var(--requests-ink);
+  background: #111416;
+  font: inherit;
+  font-size: 0.83rem;
   outline: none;
-  transition: all var(--transition-fast);
+
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.request-form select {
+  min-height: 45px;
+  padding: 0 12px;
+}
+
+.request-form textarea {
+  min-height: 118px;
+  margin-bottom: 5px;
+  padding: 11px 12px;
+  resize: vertical;
 }
 
 .request-form select:focus,
 .request-form textarea:focus {
-  background: var(--color-surface);
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  border-color: var(--requests-accent);
+
+  box-shadow:
+    0 0 0 3px rgba(192, 132, 252, 0.12);
 }
 
-.request-form textarea {
-  resize: vertical;
-  min-height: 110px;
-  margin-bottom: 0.35rem;
+.request-form select:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
 }
 
 .request-form__count {
   align-self: flex-end;
-  margin-bottom: 1.25rem;
-  color: var(--color-text-light);
-  font-size: 0.72rem;
-  font-weight: 600;
+  margin-bottom: 16px;
+  color: #89999d;
+  font-size: 0.68rem;
 }
 
-.request-submit {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: var(--radius-md);
-  background: var(--color-primary);
-  color: #ffffff;
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
+/* =========================================================
+   BUTTON BASE
+   ========================================================= */
+
+.request-submit,
+.request-button {
+  border: 0;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.76rem;
   font-weight: 750;
+  text-decoration: none;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
-  transition: all var(--transition-fast);
+
+  transition:
+    transform 150ms ease,
+    background 150ms ease;
+}
+
+/* =========================================================
+   SEND REQUEST
+   ========================================================= */
+
+.request-submit {
+  min-height: 46px;
+  padding: 0 18px;
+  color: #f3f4f6;
+  background: var(--requests-accent);
 }
 
 .request-submit:hover {
-  background: var(--color-primary-hover);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+  background: var(--requests-accent-dark);
   transform: translateY(-1px);
 }
 
-/* Tabs */
+/* =========================================================
+   TABS
+   ========================================================= */
+
 .request-tabs {
   display: flex;
-  gap: 0.5rem;
-  padding: 1rem 1.75rem;
-  background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border-subtle);
+  align-items: center;
+  gap: 6px;
+  padding: 16px 20px 0;
 }
 
 .request-tabs button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
-  color: var(--color-text-muted);
-  background: transparent;
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.request-tabs button span {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 4px;
-  border-radius: var(--radius-full);
-  background: var(--color-border);
-  color: var(--color-text-muted);
-  font-size: 0.7rem;
+  gap: 9px;
+
+  box-sizing: border-box;
+
+  min-height: 42px;
+  padding: 9px 13px;
+
+  border: 0;
+  border-radius: 10px;
+
+  color: var(--requests-muted);
+  background: transparent;
+
+  font: inherit;
+  font-size: 0.77rem;
+  font-weight: 750;
+
+  line-height: 1;
+  white-space: nowrap;
+
+  cursor: pointer;
+}
+
+/*
+ * FIX:
+ * Give the number badge a fixed width and height.
+ * This guarantees Incoming and Outgoing remain aligned
+ * even when their text widths differ.
+ */
+.request-tabs button span {
+  display: inline-flex;
+
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  margin: 0;
+  padding: 0;
+
+  border-radius: 999px;
+
+  color: #f3f4f6;
+  background: #89999d;
+
+  font-size: 0.65rem;
   font-weight: 800;
+
+  line-height: 1;
+  text-align: center;
 }
 
 .request-tabs button.is-active {
-  color: var(--color-primary);
-  background: var(--color-surface);
-  border-color: var(--color-border);
-  box-shadow: var(--shadow-xs);
+  color: #f3f4f6;
+  background: #252c2f;
 }
 
 .request-tabs button.is-active span {
-  background: var(--color-primary);
-  color: #ffffff;
+  color: #f3f4f6;
+  background: var(--requests-accent);
 }
 
-/* Feedback Messages */
+/* =========================================================
+   FEEDBACK
+   ========================================================= */
+
 .request-feedback-wrap {
-  padding: 0 1.75rem;
+  min-height: 12px;
+  padding: 8px 20px 0;
 }
 
 .request-feedback {
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius-md);
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-top: 1rem;
+  padding: 9px 11px;
+  border-radius: 9px;
+  font-size: 0.73rem;
+  line-height: 1.4;
 }
 
 .request-feedback--error {
-  color: var(--color-danger-text);
-  background: var(--color-danger-bg);
-  border: 1px solid var(--color-danger-border);
+  margin: 0 0 14px;
+  color: #ff9b9b;
+  background: rgba(159, 47, 47, 0.15);
 }
 
 .request-feedback--success {
-  color: var(--color-success-text);
-  background: var(--color-success-bg);
-  border: 1px solid var(--color-success-border);
+  color: var(--requests-accent-dark);
+  background: var(--requests-accent-soft);
 }
 
-/* Request Items */
+/* =========================================================
+   REQUEST ITEMS
+   ========================================================= */
+
 .request-items {
-  padding: 1rem 1.75rem 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+  padding: 8px 20px 22px;
 }
 
 .request-item {
   display: flex;
-  gap: 1.25rem;
-  padding: 1.5rem;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  transition: border-color var(--transition-fast);
+  gap: 14px;
+  padding: 19px 0;
+  border-bottom: 1px solid var(--requests-line);
 }
 
-.request-item:hover {
-  border-color: var(--color-primary-border);
+.request-item:last-child {
+  border-bottom: 0;
 }
 
 .request-item__avatar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-md);
-  background: var(--color-primary-light);
-  color: var(--color-primary);
-  font-size: 1.15rem;
-  font-weight: 850;
-  flex-shrink: 0;
-  border: 1.5px solid var(--color-primary-border);
+  display: grid;
+
+  flex: 0 0 43px;
+
+  width: 43px;
+  height: 43px;
+
+  place-items: center;
+
+  border-radius: 14px;
+
+  color: var(--requests-accent-dark);
+  background: var(--requests-accent-soft);
+
+  font-size: 0.88rem;
+  font-weight: 800;
 }
 
 .request-item__content {
+  min-width: 0;
   flex: 1;
 }
 
@@ -322,142 +408,174 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 10px;
 }
 
 .request-item__direction {
-  margin: 0;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--color-text-muted);
+  margin-bottom: 2px;
+  color: var(--requests-muted);
+  font-size: 0.68rem;
 }
 
 .request-item h3 {
-  margin: 0.15rem 0 0;
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--color-text-heading);
+  margin: 0;
+  color: var(--requests-ink);
+  font-size: 0.94rem;
 }
 
 .request-status {
-  padding: 0.25rem 0.65rem;
-  border-radius: var(--radius-full);
-  font-size: 0.72rem;
+  flex: 0 0 auto;
+
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  font-size: 0.63rem;
   font-weight: 800;
+
   text-transform: capitalize;
 }
 
-.request-status--pending {
-  background: var(--color-warning-bg);
-  color: var(--color-warning-text);
-  border: 1px solid var(--color-warning-border);
-}
-
-.request-status--accepted {
-  background: var(--color-success-bg);
-  color: var(--color-success-text);
-  border: 1px solid var(--color-success-border);
-}
-
+.request-status--pending,
+.request-status--accepted,
 .request-status--rejected {
-  background: var(--color-danger-bg);
-  color: var(--color-danger-text);
-  border: 1px solid var(--color-danger-border);
+  color: #d8c5ea;
+  background: #29232f;
 }
 
 .request-item__message {
-  margin: 0.75rem 0;
-  color: var(--color-text);
-  font-size: 0.875rem;
+  margin: 10px 0 7px;
+
+  color: #a8b5b8;
+
+  font-size: 0.76rem;
   line-height: 1.55;
-  font-style: italic;
-  background: var(--color-surface);
-  padding: 0.85rem 1rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border-subtle);
 }
 
 .request-item__date {
-  color: var(--color-text-light);
-  font-size: 0.75rem;
-  margin: 0;
+  color: #89999d;
+  font-size: 0.65rem;
 }
+
+/* =========================================================
+   ACTION BUTTONS
+   ========================================================= */
 
 .request-item__actions {
   display: flex;
-  gap: 0.65rem;
-  margin-top: 1rem;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 13px;
 }
 
 .request-button {
   display: inline-flex;
+
+  min-height: 35px;
+
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 750;
-  border: 1px solid transparent;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all var(--transition-fast);
+
+  box-sizing: border-box;
+
+  padding: 0 13px;
 }
 
+/* ACCEPT */
+
 .request-button--primary {
-  background: var(--color-primary);
-  color: #ffffff;
+  color: #f3f4f6;
+  background: var(--requests-accent);
 }
 
 .request-button--primary:hover {
-  background: var(--color-primary-hover);
+  background: var(--requests-accent-dark);
+  transform: translateY(-1px);
 }
 
+/* SECONDARY */
+
 .request-button--secondary {
-  background: var(--color-surface);
-  color: var(--color-text-heading);
-  border-color: var(--color-border);
+  color: var(--requests-accent-dark);
+  background: var(--requests-accent-soft);
 }
 
 .request-button--secondary:hover {
-  background: var(--color-border);
+  background: #30263a;
+  transform: translateY(-1px);
 }
 
+/* REJECT */
+
 .request-button--danger {
-  background: var(--color-danger-bg);
-  color: var(--color-danger-text);
-  border-color: var(--color-danger-border);
+  color: #ff9b9b;
+  background: rgba(159, 47, 47, 0.15);
 }
 
 .request-button--danger:hover {
-  background: var(--color-danger);
-  color: #ffffff;
+  background: rgba(159, 47, 47, 0.25);
+  transform: translateY(-1px);
 }
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
 
 .request-empty {
-  padding: 3.5rem 1.5rem;
+  padding: 46px 20px;
+  color: var(--requests-muted);
   text-align: center;
-  color: var(--color-text-muted);
 }
 
-.request-empty span {
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 0.5rem;
+.request-empty > span {
+  display: grid;
+
+  width: 46px;
+  height: 46px;
+
+  margin: 0 auto 13px;
+
+  place-items: center;
+
+  border-radius: 14px;
+
+  color: var(--requests-accent);
+  background: var(--requests-accent-soft);
+
+  font-size: 1.25rem;
 }
 
 .request-empty h3 {
-  margin: 0 0 0.25rem;
-  font-size: 1.1rem;
-  color: var(--color-text-heading);
+  margin: 0 0 4px;
+
+  color: var(--requests-ink);
+
+  font-size: 0.9rem;
 }
 
 .request-empty p {
-  font-size: 0.85rem;
-  margin: 0;
+  font-size: 0.75rem;
 }
 
-@media (max-width: 860px) {
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 800px) {
+  .requests-page {
+    padding: 34px 18px 54px;
+  }
+
+  .requests-hero {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .requests-hero__summary {
+    width: fit-content;
+  }
+
   .requests-layout {
     grid-template-columns: 1fr;
   }
@@ -465,9 +583,25 @@
   .request-panel--form {
     position: static;
   }
+}
 
-  .requests-hero {
-    flex-direction: column;
+@media (max-width: 480px) {
+  .requests-page {
+    padding-inline: 12px;
+  }
+
+  .request-panel__heading,
+  .request-form {
+    padding-inline: 18px;
+  }
+
+  .request-tabs,
+  .request-items {
+    padding-inline: 14px;
+  }
+
+  .request-item__heading {
     align-items: flex-start;
+    flex-direction: column;
   }
 }

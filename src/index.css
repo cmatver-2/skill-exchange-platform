@@ -107,7 +107,12 @@ body {
 }
 
 #root {
-  min-height: 100vh;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  text-align: center;
+  border-inline: none;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -439,4 +444,13 @@ a:hover {
 
 .fade-in {
   animation: fadeIn 250ms ease forwards;
+}
+
+/* Hide scrollbar but keep scrolling */
+html {
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Edge, Safari */
 }
