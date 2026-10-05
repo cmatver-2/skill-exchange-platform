@@ -8,6 +8,7 @@ import "./Sessions.css";
 function getToday() {
   const today = new Date();
   const offset = today.getTimezoneOffset();
+
   return new Date(today.getTime() - offset * 60 * 1000)
     .toISOString()
     .split("T")[0];
@@ -27,8 +28,11 @@ function formatSessionDate(date, time) {
 function Sessions() {
   const { currentUser, requests, sessions, setSessions } = useAppContext();
   const [searchParams] = useSearchParams();
+
   const requestedRequestId = searchParams.get("request") ?? "";
+
   const [activeView, setActiveView] = useState("upcoming");
+
   const [form, setForm] = useState({
     requestId: requestedRequestId,
     date: "",
@@ -36,6 +40,7 @@ function Sessions() {
     duration: "60",
     location: "",
   });
+
   const [formError, setFormError] = useState("");
   const [notice, setNotice] = useState("");
 
@@ -78,28 +83,39 @@ function Sessions() {
       request.fromUserId === currentUser.id
         ? request.toUserId
         : request.fromUserId;
+
     const otherUser = getUser(otherUserId);
     const skill = getSkill(request.skillId);
 
-    return `${skill?.name ?? "Unknown skill"} with ${otherUser?.name ?? "Unknown student"}`;
+    return `${skill?.name ?? "Unknown skill"} with ${
+      otherUser?.name ?? "Unknown student"
+    }`;
   }
 
   function handleInputChange(event) {
     const { name, value } = event.target;
-    setForm((previousForm) => ({ ...previousForm, [name]: value }));
+
+    setForm((previousForm) => ({
+      ...previousForm,
+      [name]: value,
+    }));
+
     setFormError("");
     setNotice("");
   }
 
   function handleSchedule(event) {
     event.preventDefault();
+
     setFormError("");
     setNotice("");
 
     const requestId = Number(form.requestId);
+
     const request = acceptedUnscheduledRequests.find(
       (item) => item.id === requestId
     );
+
     const location = form.location.trim();
 
     if (!request || !form.date || !form.time || !form.duration || !location) {
@@ -139,7 +155,11 @@ function Sessions() {
       status: "upcoming",
     };
 
-    setSessions((previousSessions) => [...previousSessions, newSession]);
+    setSessions((previousSessions) => [
+      ...previousSessions,
+      newSession,
+    ]);
+
     setForm({
       requestId: "",
       date: "",
@@ -147,6 +167,7 @@ function Sessions() {
       duration: "60",
       location: "",
     });
+
     setActiveView("upcoming");
     setNotice("Session scheduled successfully.");
   }
@@ -159,25 +180,32 @@ function Sessions() {
           : session
       )
     );
+
     setNotice("Session marked as completed.");
   }
 
   function renderSessionCard(session) {
     const isTeacher = session.teacherId === currentUser.id;
+
     const otherUser = getUser(
       isTeacher ? session.learnerId : session.teacherId
     );
+
     const skill = getSkill(session.skillId);
+
     const isMeetingLink = /^https?:\/\//i.test(session.location);
 
     return (
       <article className="session-item" key={session.id}>
         <div className="session-item__date" aria-hidden="true">
-          <strong>{new Date(`${session.date}T00:00`).getDate()}</strong>
+          <strong>
+            {new Date(`${session.date}T00:00`).getDate()}
+          </strong>
+
           <span>
-            {new Intl.DateTimeFormat("en-IN", { month: "short" }).format(
-              new Date(`${session.date}T00:00`)
-            )}
+            {new Intl.DateTimeFormat("en-IN", {
+              month: "short",
+            }).format(new Date(`${session.date}T00:00`))}
           </span>
         </div>
 
@@ -187,21 +215,43 @@ function Sessions() {
               <span className="session-role">
                 You are {isTeacher ? "teaching" : "learning"}
               </span>
+
               <h3>{skill?.name ?? "Unknown skill"}</h3>
             </div>
-            <span className={`session-status session-status--${session.status}`}>
+
+            <span
+              className={`session-status session-status--${session.status}`}
+            >
               {session.status}
             </span>
           </div>
 
           <div className="session-details">
-            <p><span>With</span>{otherUser?.name ?? "Unknown student"}</p>
-            <p><span>When</span>{formatSessionDate(session.date, session.time)}</p>
-            <p><span>Duration</span>{session.duration} minutes</p>
+            <p>
+              <span>With</span>
+              {otherUser?.name ?? "Unknown student"}
+            </p>
+
+            <p>
+              <span>When</span>
+              {formatSessionDate(session.date, session.time)}
+            </p>
+
+            <p>
+              <span>Duration</span>
+              {session.duration} minutes
+            </p>
+
             <p>
               <span>Location</span>
+
               {isMeetingLink ? (
-                <a href={session.location} target="_blank" rel="noreferrer">
+                <a
+                  href={session.location}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="session-button session-button--secondary"
+                >
                   Online meeting
                 </a>
               ) : (
@@ -212,16 +262,6 @@ function Sessions() {
 
           {session.status === "upcoming" && (
             <div className="session-item__actions">
-              {isMeetingLink && (
-                <a
-                  className="session-button session-button--secondary"
-                  href={session.location}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Join session
-                </a>
-              )}
               <button
                 type="button"
                 className="session-button session-button--primary"
@@ -234,7 +274,10 @@ function Sessions() {
 
           {session.status === "completed" && (
             <div className="session-item__actions">
-              <Link className="session-button session-button--secondary" to="/reviews">
+              <Link
+                className="session-button session-button--secondary"
+                to="/reviews"
+              >
                 Leave a review
               </Link>
             </div>
@@ -245,22 +288,32 @@ function Sessions() {
   }
 
   const visibleSessions =
-    activeView === "upcoming" ? upcomingSessions : completedSessions;
+    activeView === "upcoming"
+      ? upcomingSessions
+      : completedSessions;
 
   return (
     <main className="sessions-page">
       <header className="sessions-hero">
         <div>
           <p className="sessions-eyebrow">Share your time</p>
+
           <h1>Learning Sessions</h1>
-          <p>Schedule accepted exchanges and keep track of every lesson.</p>
+
+          <p>
+            Schedule accepted exchanges and keep track of every lesson.
+          </p>
         </div>
 
-        <div className="sessions-stats" aria-label="Session summary">
+        <div
+          className="sessions-stats"
+          aria-label="Session summary"
+        >
           <div>
             <strong>{upcomingSessions.length}</strong>
             <span>Upcoming</span>
           </div>
+
           <div>
             <strong>{completedSessions.length}</strong>
             <span>Completed</span>
@@ -278,13 +331,26 @@ function Sessions() {
           {acceptedUnscheduledRequests.length === 0 ? (
             <div className="schedule-empty">
               <span aria-hidden="true">✓</span>
+
               <h3>Everything is scheduled</h3>
-              <p>Accept a new learning request before scheduling another session.</p>
+
+              <p>
+                Accept a new learning request before scheduling another
+                session.
+              </p>
+
               <Link to="/requests">View requests</Link>
             </div>
           ) : (
-            <form className="session-form" onSubmit={handleSchedule} noValidate>
-              <label htmlFor="session-request">Accepted request</label>
+            <form
+              className="session-form"
+              onSubmit={handleSchedule}
+              noValidate
+            >
+              <label htmlFor="session-request">
+                Accepted request
+              </label>
+
               <select
                 id="session-request"
                 name="requestId"
@@ -293,6 +359,7 @@ function Sessions() {
                 required
               >
                 <option value="">Select a request</option>
+
                 {acceptedUnscheduledRequests.map((request) => (
                   <option key={request.id} value={request.id}>
                     {getRequestLabel(request)}
@@ -302,7 +369,10 @@ function Sessions() {
 
               <div className="session-form__row">
                 <div>
-                  <label htmlFor="session-date">Date</label>
+                  <label htmlFor="session-date">
+                    Date
+                  </label>
+
                   <input
                     id="session-date"
                     name="date"
@@ -313,8 +383,12 @@ function Sessions() {
                     required
                   />
                 </div>
+
                 <div>
-                  <label htmlFor="session-time">Time</label>
+                  <label htmlFor="session-time">
+                    Time
+                  </label>
+
                   <input
                     id="session-time"
                     name="time"
@@ -326,7 +400,10 @@ function Sessions() {
                 </div>
               </div>
 
-              <label htmlFor="session-duration">Duration</label>
+              <label htmlFor="session-duration">
+                Duration
+              </label>
+
               <select
                 id="session-duration"
                 name="duration"
@@ -341,7 +418,10 @@ function Sessions() {
                 <option value="120">120 minutes</option>
               </select>
 
-              <label htmlFor="session-location">Meeting link or location</label>
+              <label htmlFor="session-location">
+                Meeting link or location
+              </label>
+
               <input
                 id="session-location"
                 name="location"
@@ -352,9 +432,16 @@ function Sessions() {
                 required
               />
 
-              {formError && <p className="session-feedback session-feedback--error">{formError}</p>}
+              {formError && (
+                <p className="session-feedback session-feedback--error">
+                  {formError}
+                </p>
+              )}
 
-              <button type="submit" className="session-submit">
+              <button
+                type="submit"
+                className="session-submit"
+              >
                 Schedule session
               </button>
             </form>
@@ -368,21 +455,34 @@ function Sessions() {
               <h2>My sessions</h2>
             </div>
 
-            <div className="session-tabs" role="tablist" aria-label="Session status">
+            <div
+              className="session-tabs"
+              role="tablist"
+              aria-label="Session status"
+            >
               <button
                 type="button"
                 role="tab"
                 aria-selected={activeView === "upcoming"}
-                className={activeView === "upcoming" ? "is-active" : ""}
+                className={
+                  activeView === "upcoming"
+                    ? "is-active"
+                    : ""
+                }
                 onClick={() => setActiveView("upcoming")}
               >
                 Upcoming
               </button>
+
               <button
                 type="button"
                 role="tab"
                 aria-selected={activeView === "completed"}
-                className={activeView === "completed" ? "is-active" : ""}
+                className={
+                  activeView === "completed"
+                    ? "is-active"
+                    : ""
+                }
                 onClick={() => setActiveView("completed")}
               >
                 Completed
@@ -390,15 +490,26 @@ function Sessions() {
             </div>
           </div>
 
-          <div className="session-feedback-wrap" aria-live="polite">
-            {notice && <p className="session-feedback session-feedback--success">{notice}</p>}
+          <div
+            className="session-feedback-wrap"
+            aria-live="polite"
+          >
+            {notice && (
+              <p className="session-feedback session-feedback--success">
+                {notice}
+              </p>
+            )}
           </div>
 
           <div className="session-items">
             {visibleSessions.length === 0 ? (
               <div className="session-empty">
                 <span aria-hidden="true">○</span>
-                <h3>No {activeView} sessions</h3>
+
+                <h3>
+                  No {activeView} sessions
+                </h3>
+
                 <p>
                   {activeView === "upcoming"
                     ? "Schedule an accepted request to see it here."
