@@ -278,4 +278,4 @@ npm run dev
 
 ---
 
-<p align="center">Built with ❤️ by Chris, Dane, Derick, Govind & Daniel</p>
+<p align="center">Built with ❤️ by Chris, Dane, Derick, Govind, Daniel, Fahad & Goutham</p>
