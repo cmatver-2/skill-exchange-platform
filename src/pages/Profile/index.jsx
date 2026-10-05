@@ -7,31 +7,31 @@ import "../../styles/profile.css";
 
 function Profile() {
   const { userId } = useParams();
+  const { currentUser, setCurrentUser, reviews } = useAppContext();
 
-  const {
-    currentUser,
-    setCurrentUser,
-    reviews,
-  } = useAppContext();
+  const selectedUser = users.find((u) => u.id === Number(userId));
 
-  const user = Number(userId) === currentUser.id
-    ? currentUser
-    : users.find((u) => u.id === Number(userId));
+  const user =
+    currentUser && currentUser.id === Number(userId)
+      ? currentUser
+      : selectedUser;
 
   const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState(user?.name || "");
-  const [bio, setBio] = useState(user?.bio || "");
-  const [interests, setInterests] = useState(
-    user?.interests?.join(", ") || ""
-  );
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  const [interests, setInterests] = useState("");
 
   if (!user) {
     return (
       <div className="profile-page">
-        <div className="card text-center py-12">
-          <h2>User not found</h2>
-          <p className="text-muted">The student profile you are looking for does not exist.</p>
-          <Link to="/" className="btn btn-primary mt-4">Return Home</Link>
+        <div className="card">
+          <h1>User not found</h1>
+          <p className="page-subtitle">
+            The profile you are looking for does not exist.
+          </p>
+          <Link to="/search" className="btn btn-primary">
+            Back to Search
+          </Link>
         </div>
       </div>
     );
@@ -41,298 +41,434 @@ function Profile() {
     (review) => review.revieweeId === user.id
   );
 
+  const getSkill = (skillId) => {
+    return skills.find((skill) => skill.id === skillId);
+  };
+
   const getSkillName = (skillId) => {
-    const skill = skills.find((skill) => skill.id === skillId);
+    const skill = getSkill(skillId);
     return skill ? skill.name : "Unknown Skill";
   };
 
   const getSkillCategory = (skillId) => {
-    const skill = skills.find((skill) => skill.id === skillId);
-    return skill ? skill.category : "General";
+    const skill = getSkill(skillId);
+    return skill ? skill.category : "";
   };
 
-  const getProficiencyClass = (level) => {
-    switch (level?.toLowerCase()) {
-      case "advanced":
-        return "badge-success";
-      case "intermediate":
-        return "badge-primary";
-      case "beginner":
-        return "badge-warning";
-      default:
-        return "badge-neutral";
-    }
+  const startEditing = () => {
+    setName(user.name);
+    setBio(user.bio);
+    setInterests(user.interests ? user.interests.join(", ") : "");
+    setIsEditing(true);
   };
 
-  const handleSave = (event) => {
-    event.preventDefault();
+  const cancelEditing = () => {
+    setIsEditing(false);
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
 
     const updatedUser = {
       ...currentUser,
-      name: name.trim(),
+      name: name.trim() || currentUser.name,
       bio: bio.trim(),
       interests: interests
         .split(",")
-        .map((interest) => interest.trim())
-        .filter((interest) => interest !== ""),
+        .map((item) => item.trim())
+        .filter((item) => item !== ""),
     };
 
     setCurrentUser(updatedUser);
     setIsEditing(false);
   };
 
-  const handleCancel = () => {
-    setName(user.name);
-    setBio(user.bio);
-    setInterests(user.interests.join(", "));
-    setIsEditing(false);
-  };
-
-  const isSelf = user.id === currentUser.id;
-
   return (
     <div className="profile-page">
 
-      {/* Profile Header Hero Card */}
+      {/* Profile Hero */}
       <div className="profile-hero-card">
+
         <div className="profile-hero-banner"></div>
 
         <div className="profile-hero-body">
+
           <div className="profile-avatar-wrapper">
-            <img src={user.avatar} alt={user.name} className="profile-avatar" />
-            <span className="profile-status-dot" title="Active on campus"></span>
+            <img
+              className="profile-avatar"
+              src={user.avatar}
+              alt={user.name}
+            />
+
+            <span className="profile-status-dot"></span>
           </div>
 
           <div className="profile-hero-info">
+
             <div className="profile-name-row">
               <h1>{user.name}</h1>
-              <span className="badge badge-primary">{user.role}</span>
+
+              <span className="badge badge-primary">
+                Student
+              </span>
             </div>
 
-            <p className="profile-bio-text">{user.bio}</p>
+            <p className="profile-bio-text">
+              {user.bio || "No bio added yet."}
+            </p>
 
             <div className="profile-meta-row">
-              <span className="profile-rating-pill">
-                ⭐ {user.rating ? `${user.rating.toFixed(1)} / 5.0` : "No ratings"}
-              </span>
+
+              {user.rating !== null && (
+                <span className="profile-rating-pill">
+                  ★ {user.rating}
+                </span>
+              )}
+
               <span>•</span>
-              <span className="profile-meta-text">
-                {user.skillsTaught.length} skills teaching · {user.skillsWanted.length} skills learning
+
+              <span>
+                {user.skillsTaught.length} skills taught
               </span>
+
+              <span>•</span>
+
+              <span>
+                {user.skillsWanted.length} skills wanted
+              </span>
+
             </div>
+
           </div>
 
           <div className="profile-hero-actions">
-            {isSelf ? (
+
+            {currentUser && currentUser.id === user.id && (
               <button
-                type="button"
-                className="btn btn-outline"
-                onClick={() => setIsEditing(true)}
+                className="btn btn-primary"
+                onClick={startEditing}
               >
                 ✏️ Edit Profile
               </button>
-            ) : (
-              <Link to="/requests" className="btn btn-primary">
-                📩 Propose Skill Swap
-              </Link>
             )}
+
+            <Link
+              to="/search"
+              className="btn btn-secondary"
+            >
+              Browse Skills
+            </Link>
+
           </div>
+
         </div>
       </div>
 
-      {/* Edit Profile Form Modal/Section */}
-      {isEditing && isSelf && (
-        <div className="card profile-edit-card fade-in">
-          <div className="panel-header">
+      {/* Edit Profile */}
+      {isEditing && currentUser.id === user.id && (
+        <div className="card profile-edit-card">
+
+          <div className="profile-card-header">
+            <div className="profile-card-icon bg-indigo">
+              ✏️
+            </div>
+
             <div>
-              <h2>Edit Profile Information</h2>
-              <p>Update your display name, bio, and topics of interest.</p>
+              <h3>Edit Profile</h3>
+              <p>Update your profile information</p>
             </div>
           </div>
 
-          <form onSubmit={handleSave} className="profile-edit-form">
+          <form
+            className="profile-edit-form"
+            onSubmit={handleSave}
+          >
+
             <div className="form-group">
-              <label htmlFor="profile-name" className="form-label">
-                Full Name
+              <label className="form-label">
+                Name
               </label>
+
               <input
-                id="profile-name"
-                type="text"
                 className="form-input"
+                type="text"
                 value={name}
-                onChange={(event) => setName(event.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="profile-bio" className="form-label">
-                Short Bio
+              <label className="form-label">
+                Bio
               </label>
+
               <textarea
-                id="profile-bio"
                 className="form-textarea"
                 value={bio}
-                onChange={(event) => setBio(event.target.value)}
-                rows="3"
-                required
+                onChange={(e) => setBio(e.target.value)}
+                placeholder="Tell others about yourself..."
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="profile-interests" className="form-label">
-                Interests (comma separated)
+              <label className="form-label">
+                Interests
               </label>
+
               <input
-                id="profile-interests"
-                type="text"
                 className="form-input"
+                type="text"
                 value={interests}
-                onChange={(event) => setInterests(event.target.value)}
-                placeholder="Example: Coding, Design, Chess, Music"
+                onChange={(e) => setInterests(e.target.value)}
+                placeholder="Coding, Chess, Music"
               />
+
+              <small className="empty-subtext">
+                Separate interests using commas.
+              </small>
             </div>
 
             <div className="edit-buttons">
-              <button type="submit" className="btn btn-primary">
+
+              <button
+                type="submit"
+                className="btn btn-primary"
+              >
                 Save Changes
               </button>
+
               <button
                 type="button"
                 className="btn btn-secondary"
-                onClick={handleCancel}
+                onClick={cancelEditing}
               >
                 Cancel
               </button>
+
             </div>
+
           </form>
         </div>
       )}
 
-      {/* Skills Split Row */}
+      {/* Skills */}
       <div className="profile-grid-two-cols">
-        
-        {/* Skills I Can Teach */}
+
+        {/* Skills Taught */}
         <div className="card profile-card">
+
           <div className="profile-card-header">
-            <span className="profile-card-icon bg-indigo">🎓</span>
-            <div>
-              <h3>Skills I Can Teach</h3>
-              <p>Offerings available for peer sessions.</p>
+
+            <div className="profile-card-icon bg-indigo">
+              🎓
             </div>
+
+            <div>
+              <h3>Skills I Teach</h3>
+              <p>Knowledge I can share</p>
+            </div>
+
           </div>
 
           <div className="profile-skills-list">
-            {user.skillsTaught.length === 0 ? (
-              <p className="empty-subtext">No teaching skills listed yet.</p>
-            ) : (
-              user.skillsTaught.map((skill) => (
-                <div className="profile-skill-item" key={skill.skillId}>
+
+            {user.skillsTaught.length > 0 ? (
+              user.skillsTaught.map((item) => (
+                <div
+                  className="profile-skill-item"
+                  key={item.skillId}
+                >
                   <div>
-                    <span className="profile-skill-name">{getSkillName(skill.skillId)}</span>
-                    <span className="profile-skill-cat">{getSkillCategory(skill.skillId)}</span>
+                    <span className="profile-skill-name">
+                      {getSkillName(item.skillId)}
+                    </span>
+
+                    <span className="profile-skill-cat">
+                      {getSkillCategory(item.skillId)}
+                    </span>
                   </div>
-                  <span className={`badge ${getProficiencyClass(skill.proficiency)}`}>
-                    {skill.proficiency}
+
+                  <span className="badge badge-primary">
+                    {item.proficiency}
                   </span>
                 </div>
               ))
+            ) : (
+              <p className="empty-subtext">
+                No teaching skills added yet.
+              </p>
             )}
+
           </div>
+
         </div>
 
-        {/* Skills I Want to Learn */}
+        {/* Skills Wanted */}
         <div className="card profile-card">
+
           <div className="profile-card-header">
-            <span className="profile-card-icon bg-purple">🎯</span>
+
+            <div className="profile-card-icon bg-purple">
+              📚
+            </div>
+
             <div>
               <h3>Skills I Want to Learn</h3>
-              <p>Topics looking for peer mentorship.</p>
+              <p>Skills I'm interested in</p>
             </div>
+
           </div>
 
           <div className="profile-skills-list">
-            {user.skillsWanted.length === 0 ? (
-              <p className="empty-subtext">No wanted skills listed yet.</p>
-            ) : (
-              user.skillsWanted.map((skill) => (
-                <div className="profile-skill-item" key={skill.skillId}>
+
+            {user.skillsWanted.length > 0 ? (
+              user.skillsWanted.map((item) => (
+                <div
+                  className="profile-skill-item"
+                  key={item.skillId}
+                >
                   <div>
-                    <span className="profile-skill-name">{getSkillName(skill.skillId)}</span>
-                    <span className="profile-skill-cat">{getSkillCategory(skill.skillId)}</span>
+                    <span className="profile-skill-name">
+                      {getSkillName(item.skillId)}
+                    </span>
+
+                    <span className="profile-skill-cat">
+                      {getSkillCategory(item.skillId)}
+                    </span>
                   </div>
-                  <span className={`badge ${getProficiencyClass(skill.proficiency)}`}>
-                    {skill.proficiency} Goal
+
+                  <span className="badge badge-secondary">
+                    {item.proficiency}
                   </span>
                 </div>
               ))
-            )}
-          </div>
-        </div>
-
-      </div>
-
-      {/* Interests & Reviews Grid */}
-      <div className="profile-grid-two-cols">
-        
-        {/* Interests */}
-        <div className="card profile-card">
-          <div className="profile-card-header">
-            <span className="profile-card-icon bg-amber">💡</span>
-            <div>
-              <h3>Interests & Passions</h3>
-              <p>Topics for casual icebreaking and networking.</p>
-            </div>
-          </div>
-
-          {user.interests.length === 0 ? (
-            <p className="empty-subtext">No interests added yet.</p>
-          ) : (
-            <div className="profile-interests-cloud">
-              {user.interests.map((interest) => (
-                <span key={interest} className="interest-tag">
-                  {interest}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Student Reviews */}
-        <div className="card profile-card">
-          <div className="profile-card-header">
-            <span className="profile-card-icon bg-emerald">⭐</span>
-            <div>
-              <h3>Peer Reviews ({userReviews.length})</h3>
-              <p>Feedback from completed learning sessions.</p>
-            </div>
-          </div>
-
-          <div className="profile-reviews-list">
-            {userReviews.length === 0 ? (
-              <p className="empty-subtext">No peer reviews received yet.</p>
             ) : (
-              userReviews.map((review) => (
-                <div className="profile-review-card" key={review.id}>
-                  <div className="profile-review-header">
-                    <span className="review-stars">
-                      {"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}
-                    </span>
-                    <span className="review-rating-num">{review.rating} / 5</span>
-                  </div>
-                  <p className="review-comment-text">“{review.comment}”</p>
-                </div>
-              ))
+              <p className="empty-subtext">
+                No learning goals added yet.
+              </p>
             )}
+
           </div>
+
         </div>
 
       </div>
 
+      {/* Interests */}
+      <div className="card profile-card">
+
+        <div className="profile-card-header">
+
+          <div className="profile-card-icon bg-amber">
+            ⭐
+          </div>
+
+          <div>
+            <h3>Interests</h3>
+            <p>Things I enjoy</p>
+          </div>
+
+        </div>
+
+        <div className="profile-interests-cloud">
+
+          {user.interests && user.interests.length > 0 ? (
+            user.interests.map((interest, index) => (
+              <span
+                className="interest-tag"
+                key={index}
+              >
+                {interest}
+              </span>
+            ))
+          ) : (
+            <p className="empty-subtext">
+              No interests added yet.
+            </p>
+          )}
+
+        </div>
+
+      </div>
+
+      {/* Reviews */}
+      <div className="card profile-card">
+
+        <div className="profile-card-header">
+
+          <div className="profile-card-icon bg-emerald">
+            ⭐
+          </div>
+
+          <div>
+            <h3>Reviews</h3>
+            <p>Feedback from other students</p>
+          </div>
+
+        </div>
+
+        <div className="profile-reviews-list">
+
+          {userReviews.length > 0 ? (
+            userReviews.map((review) => {
+
+              const reviewer = users.find(
+                (u) => u.id === review.reviewerId
+              );
+
+              return (
+                <div
+                  className="profile-review-card"
+                  key={review.id}
+                >
+
+                  <div className="profile-review-header">
+
+                    <strong>
+                      {reviewer
+                        ? reviewer.name
+                        : "Student"}
+                    </strong>
+
+                    <span className="review-rating-num">
+                      {review.rating}/5
+                    </span>
+
+                  </div>
+
+                  <div className="review-stars">
+                    {"★".repeat(review.rating)}
+                    {"☆".repeat(5 - review.rating)}
+                  </div>
+
+                  <p className="review-comment-text">
+                    "{review.comment}"
+                  </p>
+
+                </div>
+              );
+            })
+          ) : (
+            <p className="empty-subtext">
+              No reviews yet. Complete a session to receive feedback.
+            </p>
+          )}
+
+        </div>
+
+      </div>
+
+      {/* Bottom Navigation */}
       <div className="profile-bottom-nav">
-        <Link className="btn btn-secondary" to="/dashboard">
-          ← Return to Dashboard
+
+        <Link
+          to="/dashboard"
+          className="btn btn-secondary"
+        >
+          ← Back to Dashboard
         </Link>
+
       </div>
 
     </div>
