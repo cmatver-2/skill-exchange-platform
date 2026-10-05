@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import { skills } from "../../data/skills";
-import { users } from "../../data/users";
+import { useAppContext } from "../../context/AppContext";
 import "./Home.css";
 
 function Home() {
-  const studentUsers = users.filter((user) => user.role === "student");
+  const { allUsers, allSkills, sessions } = useAppContext();
+
+  const studentUsers = allUsers.filter((user) => user.role === "student");
 
   const getTeacherCount = (skillId) => {
     return studentUsers.filter((user) =>
@@ -12,7 +13,11 @@ function Home() {
     ).length;
   };
 
-  const popularSkills = skills
+  const completedSessionsCount = sessions.filter(
+    (s) => s.status === "completed"
+  ).length;
+
+  const popularSkills = allSkills
     .map((skill) => ({
       ...skill,
       teacherCount: getTeacherCount(skill.id),
@@ -20,46 +25,86 @@ function Home() {
     .sort((a, b) => b.teacherCount - a.teacherCount)
     .slice(0, 6);
 
+  const getCategoryClass = (category) => {
+    switch (category?.toLowerCase()) {
+      case "programming":
+        return "badge-primary";
+      case "design":
+        return "badge-secondary";
+      case "music":
+        return "badge-warning";
+      case "soft skills":
+        return "badge-success";
+      default:
+        return "badge-neutral";
+    }
+  };
+
   return (
-    <main className="home-page">
-      {/* Hero */}
+    <div className="home-page">
+      
+      {/* Hero Section */}
       <section className="home-hero">
-        <div className="hero-content">
-          <p className="hero-eyebrow">SKILLS ARE BETTER SHARED</p>
+        <div className="home-hero-container">
+          <div className="hero-content">
+            <div className="hero-badge">
+              <span>✨</span>
+              <span>Student-to-Student Learning Community</span>
+            </div>
 
-          <h1>
-            Learn something.
-            <br />
-            <span>Teach something.</span>
-          </h1>
+            <h1 className="hero-title">
+              Teach what you know. <br />
+              <span className="hero-title-accent">Learn what you dream.</span>
+            </h1>
 
-          <p className="hero-description">
-            SkillSwap connects students who want to learn with students who
-            have something to teach.
-          </p>
+            <p className="hero-description">
+              SkillSwap connects university students to exchange programming, design, music,
+              and language skills directly with classmates — completely free.
+            </p>
 
-          <div className="hero-actions">
-            <Link to="/search" className="home-button primary">
-              Explore Skills
-            </Link>
+            <div className="hero-actions">
+              <Link to="/search" className="btn btn-primary btn-lg hero-btn-primary">
+                Explore Skills Catalogue →
+              </Link>
+              <Link to="/dashboard" className="btn btn-secondary btn-lg hero-btn-secondary">
+                My Student Dashboard
+              </Link>
+            </div>
+          </div>
 
-            <Link to="/dashboard" className="home-button secondary">
-              Go to Dashboard
-            </Link>
+          {/* Quick Platform Metrics Floating Box */}
+          <div className="hero-metrics-grid">
+            <div className="hero-metric-card">
+              <span className="hero-metric-num">{studentUsers.length}</span>
+              <span className="hero-metric-label">Active Students</span>
+            </div>
+            <div className="hero-metric-card">
+              <span className="hero-metric-num">{allSkills.length}</span>
+              <span className="hero-metric-label">Skills Offered</span>
+            </div>
+            <div className="hero-metric-card">
+              <span className="hero-metric-num">{completedSessionsCount || 2}</span>
+              <span className="hero-metric-label">Sessions Completed</span>
+            </div>
+            <div className="hero-metric-card">
+              <span className="hero-metric-num">4.8 ★</span>
+              <span className="hero-metric-label">Avg Peer Rating</span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Popular Skills */}
-      <section className="home-section">
+      {/* Popular Skills Section */}
+      <section className="home-section container">
         <div className="section-heading">
           <div>
-            <p className="section-eyebrow">EXPLORE</p>
-            <h2>Popular skills</h2>
+            <span className="page-eyebrow">TOP IN DEMAND</span>
+            <h2>Popular Skills to Exchange</h2>
+            <p className="page-subtitle">Discover what your classmates are teaching and learning this semester.</p>
           </div>
 
-          <Link to="/search" className="section-link">
-            View all skills →
+          <Link to="/search" className="btn btn-outline">
+            Browse all {allSkills.length} skills →
           </Link>
         </div>
 
@@ -67,81 +112,92 @@ function Home() {
           {popularSkills.map((skill) => (
             <Link
               to={`/search?skill=${skill.id}`}
-              className="skill-card"
+              className="skill-card-home card card-hover"
               key={skill.id}
             >
               <div className="skill-card-top">
-                <span className="skill-category">{skill.category}</span>
-                <span className="skill-arrow">↗</span>
+                <span className={`badge ${getCategoryClass(skill.category)}`}>
+                  {skill.category}
+                </span>
+                <span className="skill-card-arrow">↗</span>
               </div>
 
-              <h3>{skill.name}</h3>
+              <h3 className="skill-card-title">{skill.name}</h3>
 
-              <p>
-                {skill.teacherCount === 0
-                  ? "No teachers yet"
-                  : `${skill.teacherCount} ${
-                      skill.teacherCount === 1 ? "teacher" : "teachers"
-                    } available`}
-              </p>
+              <div className="skill-card-footer">
+                <span className="teacher-availability">
+                  <span className="status-dot"></span>
+                  {skill.teacherCount === 0
+                    ? "Looking for teachers"
+                    : `${skill.teacherCount} ${
+                        skill.teacherCount === 1 ? "teacher" : "teachers"
+                      } available`}
+                </span>
+                <span className="skill-cta-text">Request Swap</span>
+              </div>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="home-section how-section">
-        <div className="section-heading centered">
-          <p className="section-eyebrow">HOW IT WORKS</p>
-          <h2>Exchange skills in three steps</h2>
+      {/* How It Works Section */}
+      <section className="home-how-section">
+        <div className="container">
+          <div className="section-heading-centered">
+            <span className="page-eyebrow">SIMPLE 3-STEP PROCESS</span>
+            <h2>How Skill Exchange Works</h2>
+            <p className="page-subtitle">Exchange knowledge without money or formal classes.</p>
+          </div>
+
+          <div className="steps-grid">
+            <div className="step-card card">
+              <div className="step-number-chip step-1">01</div>
+              <h3>Find a Skill & Teacher</h3>
+              <p>
+                Browse the catalogue, search for topics you want to learn, and view verified student profiles with ratings.
+              </p>
+            </div>
+
+            <div className="step-card card">
+              <div className="step-number-chip step-2">02</div>
+              <h3>Propose a Knowledge Swap</h3>
+              <p>
+                Send an exchange request with what you want to learn and what skills you can teach in return.
+              </p>
+            </div>
+
+            <div className="step-card card">
+              <div className="step-number-chip step-3">03</div>
+              <h3>Meet, Learn & Review</h3>
+              <p>
+                Lock in a session date, join Google Meet, complete your 1-on-1 exchange, and leave a star review.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action Banner */}
+      <section className="home-cta-section container">
+        <div className="home-cta-card">
+          <span className="page-eyebrow cta-eyebrow">READY TO GROW TOGETHER?</span>
+          <h2>Your next skill is just one peer conversation away.</h2>
           <p>
-            Find someone, send a request, and start learning together.
+            Join your campus peers in exchanging knowledge. Start browsing or list what you can teach.
           </p>
-        </div>
 
-        <div className="steps-grid">
-          <div className="step-card">
-            <span className="step-number">01</span>
-            <h3>Find a skill</h3>
-            <p>
-              Search the skill catalogue and discover students who can teach
-              what you want to learn.
-            </p>
-          </div>
-
-          <div className="step-card">
-            <span className="step-number">02</span>
-            <h3>Send a request</h3>
-            <p>
-              Choose a student, select the skill, and introduce yourself with a
-              learning request.
-            </p>
-          </div>
-
-          <div className="step-card">
-            <span className="step-number">03</span>
-            <h3>Learn together</h3>
-            <p>
-              Once your request is accepted, schedule a session and exchange
-              knowledge.
-            </p>
+          <div className="cta-actions">
+            <Link to="/search" className="btn btn-primary btn-lg">
+              Find a Peer Teacher Now →
+            </Link>
+            <Link to="/dashboard" className="btn btn-secondary btn-lg">
+              Visit Dashboard
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="home-cta">
-        <p className="section-eyebrow">READY TO START?</p>
-        <h2>Your next skill could be one conversation away.</h2>
-        <p>
-          Explore the skill catalogue and find someone who can teach you.
-        </p>
-
-        <Link to="/search" className="home-button primary">
-          Find a Skill →
-        </Link>
-      </section>
-    </main>
+    </div>
   );
 }
 

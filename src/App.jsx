@@ -1,6 +1,7 @@
 import { BrowserRouter } from "react-router-dom";
 import { AppProvider } from "./context/AppContext";
 import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
 import AppRoutes from "./routes/AppRoutes";
 import "./App.css";
 
@@ -9,7 +10,10 @@ function App() {
     <BrowserRouter>
       <AppProvider>
         <Navbar />
-        <AppRoutes />
+        <main className="app-main">
+          <AppRoutes />
+        </main>
+        <Footer />
       </AppProvider>
     </BrowserRouter>
   );

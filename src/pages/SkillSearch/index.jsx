@@ -67,32 +67,37 @@ function SkillSearch() {
   }
 
   return (
-    <main className="skill-search">
-      <h1>Find a skill</h1>
-      <p className="skill-search__intro">
-        Search for something you want to learn, then find a student who can teach it.
-      </p>
+    <div className="skill-search">
+      <div className="skill-search-header">
+        <span className="page-eyebrow">CATALOGUE & MATCHING</span>
+        <h1>Find Skills & Peer Teachers</h1>
+        <p className="skill-search__intro">
+          Search for something you want to learn, or find students who complement your skills.
+        </p>
+      </div>
 
-      <div className="skill-search__bar">
-        <input
-          type="search"
-          placeholder="Search skills, e.g. Python or Design"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          aria-label="Search skills"
-        />
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          aria-label="Filter by category"
-        >
-          <option value="All">All categories</option>
-          {categories.map((name) => (
-            <option key={name} value={name}>
-              {name}
-            </option>
-          ))}
-        </select>
+      <div className="skill-search__controls">
+        <div className="skill-search__bar">
+          <input
+            type="search"
+            placeholder="Search skills (e.g. Python, Photoshop, Guitar)..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            aria-label="Search skills"
+          />
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            aria-label="Filter by category"
+          >
+            <option value="All">All Categories</option>
+            {categories.map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <section className="skill-search__section">
@@ -175,7 +180,7 @@ function SkillSearch() {
           </div>
         )}
       </section>
-    </main>
+    </div>
   );
 }
 
