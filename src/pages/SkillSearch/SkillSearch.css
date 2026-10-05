@@ -1,16 +1,24 @@
-/* src/pages/SkillSearch/SkillSearch.css
-   Styles for the Skill Search page, StudentCard and SearchFilters.
-   Uses only the design tokens defined in src/index.css, so light/dark mode
-   work automatically. Class names are prefixed per component to avoid
-   clashing with other pages (plain CSS imports are global). */
+/* src/pages/SkillSearch/SkillSearch.css */
 
 .skill-search {
+  position: relative;
+  min-height: 100%;
   padding: 0 24px 48px;
   text-align: left;
+  color: #f3f4f6;
+  background:
+    radial-gradient(
+      circle at 82% 8%,
+      rgba(124, 58, 237, 0.12) 0%,
+      rgba(124, 58, 237, 0.045) 24%,
+      transparent 48%
+    ),
+    #111416;
 }
 
 .skill-search h1 {
   text-align: center;
+  color: #f3f4f6;
 }
 
 .skill-search__intro {
@@ -21,6 +29,7 @@
 .skill-search__hint {
   margin-bottom: 16px;
   font-size: 16px;
+  color: #91a0a4;
 }
 
 .skill-search__bar {
@@ -33,22 +42,27 @@
 .skill-search__bar select,
 .search-filters select {
   font: inherit;
-  color: var(--text-h);
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 8px 12px;
+  color: #f3f4f6;
+  background: #111416;
+  border: 1px solid #2c373a;
+  border-radius: 8px;
+  padding: 10px 12px;
 }
 
 .skill-search__bar input {
   flex: 1 1 240px;
 }
 
+.skill-search__bar input::placeholder {
+  color: #718084;
+}
+
 .skill-search__bar input:focus,
 .skill-search__bar select:focus,
 .search-filters select:focus {
-  outline: 2px solid var(--accent-border);
-  outline-offset: 1px;
+  outline: none;
+  border-color: #c084fc;
+  box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.12);
 }
 
 .skill-search__section {
@@ -62,14 +76,19 @@
   gap: 12px;
 }
 
+.skill-search__section-header h2 {
+  color: #f3f4f6;
+}
+
 .skill-search__empty {
   padding: 16px 0;
+  color: #91a0a4;
 }
 
 .skill-search__clear {
   font: inherit;
   font-size: 16px;
-  color: var(--accent);
+  color: #c084fc;
   background: none;
   border: none;
   padding: 0;
@@ -100,9 +119,9 @@
   gap: 16px;
   margin-top: 12px;
   padding: 12px 16px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--social-bg);
+  border: 1px solid #2c373a;
+  border-radius: 10px;
+  background: #181e20;
   font-size: 16px;
 }
 
@@ -110,6 +129,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  color: #91a0a4;
 }
 
 /* Two classes so this beats `.search-filters label` above. */
@@ -127,9 +147,20 @@
   flex-direction: column;
   gap: 10px;
   padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: 1px solid #2c373a;
+  border-radius: 10px;
+  background: #181e20;
   font-size: 16px;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.student-card:hover {
+  border-color: #44364f;
+  background: #1b2022;
+  transform: translateY(-1px);
 }
 
 .student-card__header {
@@ -148,27 +179,28 @@
 .student-card__name {
   margin: 0;
   font-size: 18px;
-  font-weight: 500;
-  color: var(--text-h);
+  font-weight: 600;
+  color: #f3f4f6;
 }
 
 .student-card__rating {
   font-size: 14px;
+  color: #f3c969;
 }
 
 .student-card__badge {
   margin-left: auto;
-  padding: 2px 10px;
+  padding: 3px 10px;
   border-radius: 999px;
   font-size: 13px;
   white-space: nowrap;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 1px solid var(--accent-border);
+  color: #c084fc;
+  background: rgba(192, 132, 252, 0.1);
+  border: 1px solid rgba(192, 132, 252, 0.22);
 }
 
 .student-card__proficiency strong {
-  color: var(--text-h);
+  color: #f3f4f6;
 }
 
 .student-card__skills {
@@ -179,29 +211,33 @@
 }
 
 .student-card__skills dt {
-  color: var(--text-h);
+  color: #f3f4f6;
 }
 
 .student-card__skills dd {
   margin: 0;
+  color: #91a0a4;
 }
 
 .student-card__exchange {
   padding: 8px 12px;
-  border-radius: 6px;
-  background: var(--accent-bg);
+  border-radius: 7px;
+  background: rgba(192, 132, 252, 0.08);
+  border: 1px solid rgba(192, 132, 252, 0.12);
+  color: #b9c4c6;
 }
 
 .student-card__exchange strong {
-  color: var(--text-h);
+  color: #f3f4f6;
 }
 
 .student-card__link {
   margin-top: auto;
-  color: var(--accent);
+  color: #c084fc;
   text-decoration: none;
 }
 
 .student-card__link:hover {
+  color: #d3a1ff;
   text-decoration: underline;
 }

@@ -2,7 +2,13 @@
   min-height: 100%;
   padding: 4.5rem 5rem;
   box-sizing: border-box;
-  background: #111416;
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(192, 132, 252, 0.12),
+      transparent 35%
+    ),
+    #111416;
   color: #f3f4f6;
   text-align: left;
 }
@@ -13,7 +19,7 @@
 
 .admin-eyebrow {
   margin: 0 0 0.75rem;
-  color: #8ed8f0;
+  color: #c084fc;
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.16em;
@@ -53,7 +59,7 @@
 
 .stat-label {
   display: block;
-  color: #8ed8f0;
+  color: #c084fc;
   font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -115,7 +121,8 @@
 }
 
 .admin-search:focus {
-  border-color: #8ed8f0;
+  border-color: #c084fc;
+  box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.1);
 }
 
 /* TABLE */
@@ -136,7 +143,7 @@
 .admin-table th {
   padding: 1rem 1.25rem;
   border-bottom: 1px solid #2c373a;
-  color: #718084;
+  color: #89999d;
   font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -155,7 +162,7 @@
 }
 
 .admin-table tbody tr:hover {
-  background: #1d2426;
+  background: #1d2326;
 }
 
 .admin-table strong {
@@ -205,8 +212,8 @@
 }
 
 .role-badge {
-  color: #8ed8f0;
-  background: rgba(142, 216, 240, 0.1);
+  color: #c084fc;
+  background: rgba(192, 132, 252, 0.14);
 }
 
 .category-badge {
@@ -226,15 +233,15 @@
   padding: 0.45rem 0.75rem;
   border: 1px solid #3a4548;
   border-radius: 7px;
-  color: #8ed8f0;
+  color: #c084fc;
   text-decoration: none;
   font-size: 0.8rem;
   font-weight: 700;
 }
 
 .table-action:hover {
-  border-color: #8ed8f0;
-  background: rgba(142, 216, 240, 0.08);
+  border-color: #c084fc;
+  background: rgba(192, 132, 252, 0.08);
 }
 
 .empty-table {
