@@ -1,17 +1,15 @@
 // src/data/users.js
-// Mock user accounts.
-// - skillsTaught / skillsWanted reference skill IDs from skills.js
-// - rating is an aggregate value, calculated from reviews.js (avg of all
-//   reviews where this user was the reviewee), stored here for convenience
-//   so components don't need to recompute it every render.
-// - role is "student" or "admin"
+import user1Pic from "../assets/Profile Pics/user1.jpg";
+import user2Pic from "../assets/Profile Pics/user2.jpg";
+import user3Pic from "../assets/Profile Pics/user3.jpg";
+import user4Pic from "../assets/Profile Pics/user4.jpg";
 
 export const users = [
   {
     id: 1,
     name: "Rahul Mehta",
     role: "student",
-    avatar: "https://i.pravatar.cc/150?img=1",
+    avatar: user1Pic,
     bio: "CS student who loves backend dev. Trying to pick up design skills.",
     interests: ["Coding", "Chess", "Sci-fi movies"],
     skillsTaught: [
@@ -27,7 +25,7 @@ export const users = [
     id: 2,
     name: "Arjun Nair",
     role: "student",
-    avatar: "https://i.pravatar.cc/150?img=2",
+    avatar: user2Pic,
     bio: "Design student, freelance illustrator. Want to get into programming.",
     interests: ["Digital art", "Gaming", "Anime"],
     skillsTaught: [
@@ -43,7 +41,7 @@ export const users = [
     id: 3,
     name: "Sneha Kapoor",
     role: "student",
-    avatar: "https://i.pravatar.cc/150?img=3",
+    avatar: user3Pic,
     bio: "Frontend dev, always learning something new on the side.",
     interests: ["Web dev", "Music", "Travel"],
     skillsTaught: [
@@ -59,7 +57,7 @@ export const users = [
     id: 4,
     name: "Aditya Rao",
     role: "student",
-    avatar: "https://i.pravatar.cc/150?img=4",
+    avatar: user4Pic,
     bio: "Musician trying to break into UI design.",
     interests: ["Music production", "Design", "Photography"],
     skillsTaught: [
@@ -74,7 +72,7 @@ export const users = [
     id: 5,
     name: "Admin User",
     role: "admin",
-    avatar: "https://i.pravatar.cc/150?img=5",
+    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=admin",
     bio: "Platform administrator.",
     interests: [],
     skillsTaught: [],

@@ -1,3 +1,7 @@
+@import "tailwindcss";
+@source "../index.html";
+@source "./**/*.{js,ts,jsx,tsx}";
+
 /* ==========================================================================
    SkillSwap — Global Design System & Stylesheet
    ========================================================================== */
@@ -127,40 +131,28 @@ body {
   width: 100%;
 }
 
-/* Typography Hierarchy */
-h1, h2, h3, h4, h5, h6 {
+/* Typography Hierarchy - Zero specificity with color inherit so utility classes (e.g. text-white) always win */
+:where(h1, h2, h3, h4, h5, h6) {
   font-family: var(--font-sans);
-  color: var(--color-text-heading);
+  color: inherit;
   font-weight: 750;
   line-height: 1.25;
   margin: 0 0 0.5rem 0;
   letter-spacing: -0.02em;
 }
 
-h1 { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.03em; }
-h2 { font-size: 1.625rem; }
-h3 { font-size: 1.25rem; font-weight: 700; }
-h4 { font-size: 1.1rem; font-weight: 700; }
-h5 { font-size: 0.95rem; font-weight: 600; }
-h6 { font-size: 0.85rem; font-weight: 600; }
-
-p {
+:where(p) {
   margin: 0 0 1rem 0;
-  color: var(--color-text);
+  color: inherit;
 }
 
-p:last-child {
+:where(p:last-child) {
   margin-bottom: 0;
 }
 
-a {
-  color: var(--color-primary);
+:where(a) {
   text-decoration: none;
   transition: color var(--transition-fast);
-}
-
-a:hover {
-  color: var(--color-primary-hover);
 }
 
 /* Page Containers */

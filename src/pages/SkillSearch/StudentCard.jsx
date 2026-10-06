@@ -1,8 +1,3 @@
-// src/pages/SkillSearch/StudentCard.jsx
-// One student in the search results or match list.
-// - skillId (optional): the skill being searched, to show their proficiency in it
-// - exchange: result of getExchange(currentUser, user)
-
 import { Link } from "react-router-dom";
 import { getSkillById, getTeachingProficiency } from "../../utils/skillMatching";
 
@@ -13,84 +8,105 @@ function skillNames(skillIds) {
 function StudentCard({ user, skillId, exchange }) {
   const proficiency = skillId ? getTeachingProficiency(user, skillId) : null;
 
-  const getProficiencyBadgeClass = (prof) => {
-    switch (prof?.toLowerCase()) {
-      case "advanced":
-        return "badge-success";
-      case "intermediate":
-        return "badge-primary";
-      case "beginner":
-        return "badge-warning";
-      default:
-        return "badge-neutral";
-    }
-  };
-
   return (
-    <article className={`student-card card card-hover ${exchange?.isMutual ? "student-card--mutual" : ""}`}>
+    <div className={`bg-white rounded-2xl p-6 shadow-sm flex flex-col justify-between relative overflow-hidden transition-all hover:shadow-md ${
+      exchange?.isMutual ? "border-2 border-indigo-300 shadow-indigo-50/50" : "border border-slate-200"
+    }`}>
       {exchange?.isMutual && (
-        <div className="student-card__mutual-ribbon">
+        <div className="absolute top-0 right-0 bg-gradient-to-l from-indigo-600 to-purple-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-bl-xl shadow-sm flex items-center gap-1">
           <span>✨</span> Perfect Exchange Match!
         </div>
       )}
 
-      <header className="student-card__header">
-        <img className="student-card__avatar" src={user.avatar} alt={user.name} />
-        <div className="student-card__title-group">
-          <h3 className="student-card__name">{user.name}</h3>
-          <div className="student-card__meta-row">
-            <span className="student-card__rating">
-              {user.rating != null ? `★ ${user.rating.toFixed(1)}` : "★ New"}
-            </span>
-            <span className="badge badge-neutral student-card__role">Student</span>
+      <div>
+        <div className="flex items-center gap-3.5 mb-4 mt-1">
+          <img
+            src={user.avatar}
+            className="w-12 h-12 rounded-2xl object-cover border border-slate-200 shadow-sm"
+            alt={user.name}
+          />
+          <div>
+            <h3 className="text-base font-bold text-slate-900">{user.name}</h3>
+            <div className="flex items-center gap-2 mt-0.5">
+              <span className="text-amber-500 text-xs font-bold">
+                ★ {user.rating != null ? user.rating.toFixed(1) : "New"}
+              </span>
+              <span className="text-slate-400 text-xs">•</span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
+                {user.role === "admin" ? "Admin" : "Student"}
+              </span>
+            </div>
           </div>
         </div>
-      </header>
 
-      {proficiency && (
-        <div className="student-card__proficiency-banner">
-          <span>Teaches {getSkillById(skillId)?.name}:</span>
-          <span className={`badge ${getProficiencyBadgeClass(proficiency)}`}>
-            {proficiency}
-          </span>
-        </div>
-      )}
+        <p className="text-xs text-slate-600 line-clamp-2 mb-4 leading-relaxed">
+          {user.bio || "Student on campus ready to trade skills."}
+        </p>
 
-      <p className="student-card__bio">{user.bio}</p>
+        {proficiency && (
+          <div className="mb-3 p-2 rounded-lg bg-indigo-50 border border-indigo-100 text-xs flex items-center justify-between">
+            <span className="text-slate-600 font-semibold">Teaches {getSkillById(skillId)?.name}:</span>
+            <span className="font-extrabold text-indigo-700">{proficiency}</span>
+          </div>
+        )}
 
-      <div className="student-card__skills-section">
-        <div className="skill-group">
-          <span className="skill-label">Teaches</span>
-          <span className="skill-values">
-            {skillNames(user.skillsTaught.map((entry) => entry.skillId)) || "—"}
-          </span>
+        <div className="space-y-2.5 pt-3 border-t border-slate-100 text-xs">
+          <div>
+            <span className="font-bold text-slate-500 block mb-1">Teaches:</span>
+            <div className="flex flex-wrap gap-1.5">
+              {user.skillsTaught.map((item) => (
+                <span
+                  key={item.skillId}
+                  className="px-2.5 py-0.8 rounded-lg bg-indigo-50 text-indigo-700 font-bold border border-indigo-200 text-[11px]"
+                >
+                  {getSkillById(item.skillId)?.name}
+                  {item.proficiency && (
+                    <span className="text-[10px] text-indigo-500 font-normal ml-1">
+                      ({item.proficiency})
+                    </span>
+                  )}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <span className="font-bold text-slate-500 block mb-1">Wants to Learn:</span>
+            <div className="flex flex-wrap gap-1.5">
+              {user.skillsWanted.map((item) => (
+                <span
+                  key={item.skillId}
+                  className="px-2.5 py-0.8 rounded-lg bg-slate-100 text-slate-700 font-medium text-[11px]"
+                >
+                  {getSkillById(item.skillId)?.name}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="skill-group">
-          <span className="skill-label">Wants to learn</span>
-          <span className="skill-values">
-            {skillNames(user.skillsWanted.map((entry) => entry.skillId)) || "—"}
-          </span>
-        </div>
+
+        {exchange?.isMutual && (
+          <div className="mt-3 p-2.5 rounded-xl bg-purple-50 border border-purple-100 text-xs text-purple-900 leading-relaxed">
+            You learn <strong>{skillNames(exchange.canLearn)}</strong> · You teach <strong>{skillNames(exchange.canTeach)}</strong>
+          </div>
+        )}
       </div>
 
-      {exchange?.isMutual && (
-        <div className="student-card__exchange-banner">
-          <p>
-            You learn <strong>{skillNames(exchange.canLearn)}</strong> · You teach{" "}
-            <strong>{skillNames(exchange.canTeach)}</strong>
-          </p>
-        </div>
-      )}
-
-      <footer className="student-card__footer">
-        <Link className="btn btn-secondary btn-sm" to={`/profile/${user.id}`}>
+      <div className="flex items-center gap-2 mt-5 pt-4 border-t border-slate-100">
+        <Link
+          to={`/profile/${user.id}`}
+          className="flex-1 py-2 px-3 text-center text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all"
+        >
           View Profile
         </Link>
-        <Link className="btn btn-primary btn-sm" to="/requests">
+        <Link
+          to="/requests"
+          className="flex-1 py-2 px-3 text-center text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl shadow-sm transition-all"
+        >
           Send Request →
         </Link>
-      </footer>
-    </article>
+      </div>
+    </div>
   );
 }
 
