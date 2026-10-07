@@ -1,281 +1,347 @@
-# 🎓 Skill Exchange Platform
+# 🎓 SkillSwap — Peer-to-Peer Student Skill Exchange Platform
 
-A student-to-student learning platform that connects people based on the skills they can teach and the skills they want to learn.
+> **A modern university platform connecting students to exchange knowledge, barter skills, and collaborate 1-on-1 — completely free.**
 
-> Example: Rahul knows C++ and wants to learn Photoshop. Arjun knows Photoshop and wants to learn C++. The platform connects them so they can exchange knowledge.
+[![React](https://img.shields.io/badge/React-19.0-61dafb?logo=react&logoColor=black)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8.3-646cff?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-v4-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![React Router](https://img.shields.io/badge/React_Router-v7-ca4245?logo=react-router&logoColor=white)](https://reactrouter.com/)
+[![License](https://img.shields.io/badge/License-MIT-emerald)](LICENSE)
 
 ---
 
 ## 📖 Table of Contents
 
-- [About the Project](#about-the-project)
-- [How It Works](#how-it-works)
-- [Main Parts of the Website](#main-parts-of-the-website)
-- [Tech Stack](#tech-stack)
-- [Project Architecture](#project-architecture)
-- [Requests & Sessions Module](#requests--sessions-module)
-- [Team & Work Split](#team--work-split)
-- [Final Website Flow](#final-website-flow)
-- [Common Topics Everyone Should Know](#common-topics-everyone-should-know)
-- [Getting Started](#getting-started)
-- [Branching & Workflow](#branching--workflow)
+- [Overview](#-overview)
+- [How Skill Exchange Works](#-how-skill-exchange-works)
+- [Key Features by Module](#-key-features-by-module)
+- [Tech Stack](#-tech-stack)
+- [Project Architecture & File Structure](#-project-architecture--file-structure)
+- [Bilateral Matching Algorithm](#-bilateral-matching-algorithm)
+- [Interactive Mock Ecosystem](#-interactive-mock-ecosystem)
+- [Team Members & Role Split](#-team-members--role-split)
+- [Getting Started](#-getting-started)
+- [Step-by-Step Demo Walkthrough (Presentation Guide)](#-step-by-step-demo-walkthrough-presentation-guide)
+- [Future Roadmap & Backend / Docker Readiness](#-future-roadmap--backend--docker-readiness)
 
 ---
 
-## About the Project
+## 🌟 Overview
 
-The **Skill Exchange Platform** is a frontend web application where students can teach skills they know and learn skills they want to improve — from other students, not a backend server. Since this is a frontend-focused project, the app behaves like a real application using **mock/sample data** instead of a live database.
+University campuses are filled with talented students who excel in specific disciplines — computer programming, graphic design, musical instruments, foreign languages, photography, or interview prep. However, students who want to learn often face expensive course fees or rigid class schedules.
 
----
+**SkillSwap** solves this with a **bilateral skill bartering model**:
+* If **Rahul** excels in **C++** and wants to learn **Photoshop**...
+* And **Arjun** is an expert in **Photoshop** and wants to learn **C++**...
+* SkillSwap detects this **mutual match**, connects them, and facilitates scheduling 1-on-1 peer sessions with verified ratings.
 
-## How It Works
-
-1. **Create an account** — Student creates a profile with name, bio, and interests.
-2. **Add skills** — Students list skills they can teach, skills they want to learn, and proficiency level.
-3. **Find people** — Search for a skill (e.g. "C++") to see students who can teach it.
-4. **Send a learning request** — Reach out to a student explaining what you want to learn.
-5. **Accept and schedule** — The other student accepts/rejects the request, then a session is arranged.
-6. **Complete the session** — Mark the session as completed once it's done.
-7. **Rating and review** — Rate the experience and leave a review.
+The platform is designed with a cohesive, modern **light-blue & slate theme** with clean typography, high WCAG contrast, interactive user switching, and zero external backend dependencies needed for demo execution.
 
 ---
 
-## Main Parts of the Website
-
-| Section | Description |
-|---|---|
-| 🏠 **Home Page** | Explains the platform, shows popular skills |
-| 👤 **User Profiles** | Skills, proficiency, bio, ratings |
-| 🔍 **Skill Search** | Find people who teach a particular skill |
-| 📩 **Requests** | Manage learning/teaching requests |
-| 📅 **Sessions** | Schedule and track learning sessions |
-| ⭐ **Reviews** | Rate completed sessions |
-| 📊 **Dashboard** | Overview of your skills, requests, and sessions |
-| 🛠️ **Admin Panel** | Manage users and skills |
-
----
-
-## Tech Stack
-
-- **HTML5** — semantic structure
-- **CSS3** — Flexbox, Grid, responsive design
-- **JavaScript (ES6)** — logic, events, array/object handling
-- **React** — components, JSX, props, state, hooks
-- **React Router** — client-side navigation
-- **Mock Data** — no backend; app runs entirely on sample JSON data
-
----
-
-## Project Architecture
+## 🔄 How Skill Exchange Works
 
 ```
-skill-exchange-platform/
-├── public/
-├── src/
-│   ├── assets/                 # images, icons
-│   ├── components/             # shared/reusable UI
-│   │   ├── layout/               (Navbar, Footer, Sidebar, PageWrapper)
-│   │   └── SkillCard.jsx
-│   ├── pages/
-│   │   ├── Home/                 
-│   │   ├── SkillSearch/          
-│   │   ├── Profile/               
-│   │   ├── Dashboard/            
-│   │   ├── Requests/              
-│   │   ├── Sessions/              
-│   │   ├── Reviews/                
-│   │   └── Admin/                  
-│   ├── data/                    # mock "database" (JSON/JS arrays)
-│   │   ├── users.js
-│   │   ├── skills.js
-│   │   ├── requests.js
-│   │   ├── sessions.js
-│   │   └── reviews.js
-│   ├── context/                 # shared app state
-│   │   └── AppContext.jsx
-│   ├── routes/
-│   │   └── AppRoutes.jsx         # React Router config
-│   ├── utils/                    # helpers (filtering, matching, validation)
-│   ├── styles/                   # global CSS, variables
-│   └── main.jsx
-├── docs/                        # diagrams, screenshots, documentation
-├── .gitignore
-├── package.json
-└── README.md
+┌─────────────────┐       ┌─────────────────┐       ┌─────────────────┐
+│ 1. Browse & Find│ ────> │ 2. Send Request │ ────> │ 3. Accept Swap  │
+│  Search skills  │       │ Propose what to │       │  Teacher agrees │
+│ & mutual matches│       │ teach in return │       │   to exchange   │
+└─────────────────┘       └─────────────────┘       └─────────────────┘
+                                                             │
+                                                             ▼
+┌─────────────────┐       ┌─────────────────┐       ┌─────────────────┐
+│ 6. Star Review  │ <──── │  5. Meet & Learn│ <──── │ 4. Lock Session │
+│ Verified rating │       │ Google Meet or  │       │ Pick date, time │
+│ added to profile│       │ in-person study │       │   & duration    │
+└─────────────────┘       └─────────────────┘       └─────────────────┘
 ```
-
-Since there's no backend, all "database" data lives in `src/data/` as mock arrays. A shared `AppContext` keeps state (current user, requests, sessions) in sync across the app so the flow — send request → accept → schedule → complete → review — actually works during a session, and can optionally persist via `localStorage`.
 
 ---
 
-## Requests & Sessions Module
+## 🚀 Key Features by Module
 
-The Requests and Sessions module is owned by **Derick**. It implements the middle of the skill-exchange workflow using React state and the shared mock data.
+### 1. 🏠 Landing & Discovery (`/`)
+- **Modern Hero Banner**: High-contrast headline (*"Teach what you know. Learn what you dream."*) set against a clean light-blue gradient.
+- **Live Campus Metrics**: Dynamic counters displaying active students, skills catalogue size, completed sessions, and platform average ratings.
+- **In-Demand Skills Grid**: Live aggregation showing real-time teacher availability for each popular skill.
+- **3-Step Process Cards**: Clear visual onboarding explaining how peer exchanges work.
 
-### Request features
+### 2. 🔍 Catalogue & Bilateral Matching (`/search`)
+- **Live Search**: Instant client-side search by skill topic, student name, or bio keywords.
+- **Category Filter**: Filter across *Programming*, *Design*, *Music*, *Languages*, and *Soft Skills*.
+- **Mutual Match Detection**: Automatically highlights students who want what you teach, flagged with a radiant **"✨ Perfect Exchange Match!"** badge.
+- **Detailed Student Cards**: Displays teaching proficiency levels (Beginner, Intermediate, Advanced), skills wanted, star ratings, and direct links to profile or exchange proposal.
 
-- Send a learning request to a student who teaches the selected skill
-- Validate the student, skill, and message fields
-- Prevent duplicate pending requests for the same student and skill
-- View incoming and outgoing requests separately
-- Accept or reject incoming requests
-- Track pending, accepted, and rejected statuses
-- Open session scheduling directly from an accepted request
+### 3. 📊 Personal Dashboard (`/dashboard`)
+- **Personalized Header**: Dynamic greeting tailored to the active user.
+- **KPI Summary Cards**: Overview of pending requests, upcoming sessions, completed sessions, and skills taught.
+- **Upcoming Sessions Widget**: Shows study dates, meeting links, and a direct button to mark sessions as completed.
+- **Pending Proposals Widget**: Quick action shortcuts to incoming learning requests.
 
-### Session features
+### 4. 👤 Student Profile & Avatar Selector (`/profile/:id`)
+- **Campus Profile Card**: Real student avatars with live status badges, rating pills, bio, and campus department metadata.
+- **Teaching & Learning Matrices**: Clean dual-column cards detailing verified teaching proficiencies and learning goals.
+- **Interests Cloud**: Dynamic tag pills showing personal hobbies and study interests.
+- **Interactive Profile Editor**: Edit public bio, interests, and select profile photos with live updates.
+- **Verified Review Log**: Chronological list of authentic student reviews, star breakdowns, and feedback comments.
 
-- Schedule an accepted request using a date, time, duration, and location
-- Prevent sessions from being scheduled in the past
-- View upcoming and completed sessions separately
-- Show whether the current user is teaching or learning
-- Open online meeting links when available
-- Mark an upcoming session as completed
-- Continue to the review page after completing a session
+### 5. 📩 Exchange Requests (`/requests`)
+- **Incoming vs. Outgoing Tabs**: Clean split view keeping received and sent proposals organized.
+- **Interactive Propose Form**: Target any campus student, pick from the skills they teach, and provide an introductory message.
+- **Accept & Decline Flow**: Tutors can accept or reject requests with immediate status transitions (`pending` → `accepted` / `rejected`).
+- **Schedule Transition**: One-click direct shortcut from an accepted proposal into session scheduling.
 
-### Module files
+### 6. 📅 Session Scheduling & Meet Room (`/sessions`)
+- **Smart Booking Form**: Pre-fills from accepted requests; validates against past dates and past times.
+- **Meeting Link Support**: Integrated Google Meet links for remote study sessions.
+- **Upcoming vs. Completed Views**: Filter between upcoming sessions and session history.
+- **Mark as Completed**: Single click marks a completed study session and unlocks the peer review form.
+
+### 7. ⭐ Peer Reviews & Ratings (`/reviews`)
+- **5-Star Interactive Rating**: Star rating selector with descriptive tooltips (*Poor*, *Fair*, *Good*, *Very Good*, *Exceptional*).
+- **Verified Review Submission**: Validates that only students who completed a learning session can review their teacher.
+- **Dynamic Rating Recalculation**: Live calculation of average ratings on the tutor's profile.
+
+### 8. 🛡️ Platform Admin Console (`/admin`)
+- **System Governance Overview**: Monitored metrics including total student registrations, catalogue depth, total exchange requests, and study sessions.
+- **Student Directory Table**: Searchable directory of registered students with rating inspection.
+- **Skills Catalogue Table**: Monitor active tutors and learners per topic across all campus disciplines.
+
+### 9. 🔄 Active User Switcher (Navbar)
+- Test the platform from different perspectives with the **Role Switcher dropdown** in the header. Switch between students (e.g., *Rahul*, *Arjun*, *Sneha*, *Priya*) or the *Platform Admin* instantly.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology | Details |
+|---|---|---|
+| **Frontend Library** | React 19 (`react`, `react-dom`) | Modern functional components, JSX, custom hooks |
+| **Build Tool** | Vite 8.3 | Lightning-fast HMR and production bundling |
+| **Routing** | React Router v7 | Declarative SPA navigation and dynamic parameters (`/profile/:id`) |
+| **Styling** | Vanilla CSS3 + Tailwind CSS v4 | Cohesive Design System variables with utility classes |
+| **State Management** | React Context (`AppContext`) | Centralized state with zero external library overhead |
+| **Assets & Media** | Local JPGs & Curated CDN | Real campus portraits in `assets/Profile Pics/` |
+
+---
+
+## 📂 Project Architecture & File Structure
 
 ```text
-src/pages/Requests/index.jsx       # Request form, lists, and status actions
-src/pages/Requests/Requests.css    # Responsive request-page styling
-src/pages/Sessions/index.jsx       # Scheduling and session management
-src/pages/Sessions/Sessions.css    # Responsive session-page styling
-src/data/requests.js               # Sample request records
-src/data/sessions.js               # Sample session records
-src/context/AppContext.jsx         # Shared request/session state
-```
-
-All updates are stored in `AppContext` for the current browser session. Refreshing the page restores the original mock data because this project intentionally has no backend or database.
-
-### Test the complete flow
-
-1. Open **Requests** from the navigation bar.
-2. Accept the pending UI Design request from Sneha Kapoor.
-3. Select **Schedule session** on the accepted request.
-4. Enter a future date, time, duration, and meeting location.
-5. Submit the form and confirm the session appears under **Upcoming**.
-6. Select **Mark as completed**.
-7. Open the **Completed** tab and continue to the review page if needed.
-
----
-
-## Team & Work Split
-
-### 👤 1. Chris — Project Structure & Integration
-**Main work:**
-- Overall project structure
-- Navigation & React Router
-- Common components/layout
-- Integrating everyone's modules
-- Git/GitHub coordination
-- Final testing
-
-**Topics to know:** HTML5 semantic elements · CSS Flexbox/Grid & responsive design · JavaScript basics & ES6 · React components & JSX · Props & State · `useState`, `useEffect` · React Router
-
----
-
-### 👤 2. Dane — Skills, Search & Matching
-**Main work:**
-- Skills students can teach/want to learn
-- Skill cards
-- Search & filtering
-- Skill matching
-- Student search results
-
-**Topics to know:** HTML forms · CSS Grid/Flexbox · JavaScript arrays & objects · Functions & conditions · Array filtering · Events · React props/state · Conditional rendering
-
----
-
-### 👤 3. Derick — Learning Requests & Sessions
-**Main work:**
-- Send learning request
-- Incoming/outgoing requests
-- Accept/reject requests
-- Request status
-- Schedule learning sessions
-- Upcoming/completed sessions
-- Mark session as completed
-
-**Topics to know:** HTML forms & input types · JavaScript functions & events · Form validation · Arrays/objects · React `useState` · `useEffect` · Conditional rendering
-
----
-
-### 👤 4. Govind — Profile, Dashboard & Reviews
-**Main work:**
-- Student profile
-- Bio/interests
-- Skills & proficiency
-- Edit profile
-- Student dashboard
-- Ratings & reviews
-- Review submission/display
-
-**Topics to know:** Semantic HTML · Forms · CSS box model/Flexbox · JavaScript objects · DOM manipulation · React components · Props & state · `useState`
-
----
-
-### 👤 5. Daniel — Admin Panel, Home Page & Documentation
-**Main work:**
-- Home/landing page
-- Popular skills section
-- Admin dashboard
-- Manage users/skills UI
-- Admin tables
-- Documentation
-- Diagrams & screenshots
-
-**Topics to know:** Semantic HTML · HTML tables/forms · CSS Grid/Flexbox · Responsive design · React components · Props · Basic state management
-
----
-
-> 💡 Each person owns their module, but everyone helps each other with topics they're less familiar with.
-
----
-
-## Final Website Flow
-
-```
-Home → Search Skills → View Profile → Send Request → Accept → Schedule Session → Complete Session → Review
+skill-exchange-platform/
+├── index.html                   # HTML entry point with Plus Jakarta Sans & Tailwind
+├── package.json                 # Project dependencies & npm run scripts
+├── vite.config.js               # Vite configuration with polling file watcher
+│
+├── src/
+│   ├── main.jsx                 # React root mount
+│   ├── App.jsx                  # App entry wrapped in AppProvider
+│   ├── index.css                # Global Design System tokens & base typography
+│   │
+│   ├── assets/
+│   │   └── Profile Pics/        # Real local student profile photos
+│   │       ├── user1.jpg        # Rahul Mehta
+│   │       ├── user2.jpg        # Arjun Nair
+│   │       ├── user3.jpg        # Sneha Kapoor
+│   │       └── user4.jpg        # Aditya Rao
+│   │
+│   ├── components/
+│   │   ├── SkillCard.jsx        # Reusable skill badge card
+│   │   ├── SkillCard.css        # SkillCard scoped styling
+│   │   └── layout/
+│   │       ├── Navbar.jsx       # Sticky navbar with live User Switcher
+│   │       └── Footer.jsx       # Footer with 7 team member credits
+│   │
+│   ├── context/
+│   │   └── AppContext.jsx       # Unified state (users, skills, requests, sessions, reviews)
+│   │
+│   ├── data/                    # Interactive Mock Database
+│   │   ├── users.js             # 21 detailed profiles across campus disciplines
+│   │   ├── skills.js            # 20 skill topics across 5 major categories
+│   │   ├── requests.js          # Learning proposals with statuses
+│   │   ├── sessions.js          # Scheduled and completed study sessions
+│   │   └── reviews.js           # Verified student feedback and ratings
+│   │
+│   ├── pages/
+│   │   ├── Home/                # Landing page (index.jsx, Home.css)
+│   │   ├── SkillSearch/         # Catalogue & StudentCard.jsx
+│   │   ├── Dashboard/           # Personal student overview
+│   │   ├── Profile/             # User profile and avatar editor
+│   │   ├── Requests/            # Incoming/outgoing proposal management
+│   │   ├── Sessions/            # Session scheduling & completion
+│   │   ├── Reviews/             # 5-star rating submission
+│   │   └── Admin/               # Platform administration console
+│   │
+│   ├── routes/
+│   │   └── AppRoutes.jsx        # Route definitions
+│   │
+│   └── utils/
+│       └── skillMatching.js     # Bilateral matching & search helper functions
 ```
 
 ---
 
-## Common Topics Everyone Should Know
+## 🧩 Bilateral Matching Algorithm
 
-- **HTML:** structure, semantic elements, forms, tables
-- **CSS:** box model, Flexbox, Grid, media queries
-- **JavaScript:** variables, arrays, objects, functions, events, DOM, validation, ES6
-- **React:** components, JSX, props, state, `useState`, `useEffect`, routing, conditional rendering
+Located in [`src/utils/skillMatching.js`](src/utils/skillMatching.js), the algorithm evaluates compatibility between the active user and other campus members:
+
+```javascript
+// 1. Identify skills user A can teach that user B wants to learn
+const canTeach = userA.skillsTaught
+  .map(st => st.skillId)
+  .filter(id => userB.skillsWanted.some(sw => sw.skillId === id));
+
+// 2. Identify skills user B can teach that user A wants to learn
+const canLearn = userB.skillsTaught
+  .map(st => st.skillId)
+  .filter(id => userA.skillsWanted.some(sw => sw.skillId === id));
+
+// 3. Perfect bilateral match when both conditions are satisfied!
+const isMutual = canTeach.length > 0 && canLearn.length > 0;
+```
+
+When `isMutual` is true, the user card is highlighted with the purple gradient badge, explaining exactly what each student will teach and learn.
 
 ---
 
-## Getting Started
+## 👥 Interactive Mock Ecosystem
+
+### 21 Total Users (20 Campus Students + 1 Admin)
+1. **Rahul Mehta** (CS Backend · C++, Python · wants Photoshop)
+2. **Arjun Nair** (Design & Illustration · Photoshop, UI Design · wants C++)
+3. **Sneha Kapoor** (Frontend Dev · JavaScript, React · wants Guitar)
+4. **Aditya Rao** (Audio & Music · Guitar · wants Figma)
+5. **Admin User** (Platform Administration & Safety Oversight)
+6. **Priya Sharma** (AI/ML Research · Machine Learning, Python · wants Public Speaking)
+7. **Rohan Verma** (Mechanical CAD · 3D Modeling, C++ · wants UI Design)
+8. **Ananya Iyer** (HCI & Design Systems · Figma, UI Design · wants React)
+9. **Karthik Nair** (Competitive Programming · DSA, C++ · wants Guitar)
+10. **Meera Sen** (Film & Media · Video Editing, Photography · wants Python)
+11. **Vikram Patel** (Finance & Markets · Financial Literacy, Public Speaking · wants DSA)
+12. **Divya Menon** (Languages · French, German · wants Photoshop)
+13. **Aman Gupta** (Full-Stack Dev · React, JavaScript · wants 3D Modeling)
+14. **Ishaan Malhotra** (Sound Design · Music Production, Piano · wants Figma)
+15. **Tanvi Joshi** (Journalism · Content Writing, Public Speaking · wants Video Editing)
+16. **Nikhil Deshmukh** (Data Science · Python, ML · wants French)
+17. **Pooja Reddy** (Architecture · 3D Modeling, Photography · wants Spanish)
+18. **Farhan Ali** (Computer Science · DSA, Python · wants Music Production)
+19. **Rhea Chakraborty** (Digital Art · Photoshop, UI Design · wants ML)
+20. **Siddharth Das** (Music Academy · Piano, Guitar · wants Financial Literacy)
+21. **Kavya Nambiar** (Linguistics · Spanish, French · wants React)
+
+### 20 Campus Skill Offerings
+* **Programming**: C++, Python, JavaScript, React, Data Structures & Algorithms, Machine Learning
+* **Design**: Photoshop, UI Design, Figma, 3D Modeling (Blender), Video Editing, Photography
+* **Music**: Guitar, Keyboard & Piano, Music Production
+* **Languages**: Spanish, French, German
+* **Soft Skills**: Public Speaking, Financial Literacy, Content Writing
+
+---
+
+## 👨‍💻 Team Members & Role Split
+
+| Member | Assigned Role & Modules | Core Responsibilities |
+|---|---|---|
+| **Chris** | **Routing & Architecture** | Project structure, React Router v7 configuration, common layout wrapper, build & Git integration |
+| **Dane** | **Skill Search & Discovery** | Skill catalogue search, category filters, bilateral matching algorithm (`skillMatching.js`) |
+| **Derick** | **Requests & Sessions** | Incoming/outgoing proposal management, validation logic, session scheduling, Meet room links |
+| **Govind** | **Profile & Reviews** | Student profile UI, avatar selector, user switcher, 5-star review submission system |
+| **Daniel** | **Admin & Dashboard** | Platform governance console, KPI statistics, user and skills directory management |
+| **Fahad** | **QA & Evaluation** | Cross-browser compatibility, color contrast/WCAG accessibility, test case verification |
+| **Goutham** | **Documentation & Testing** | Project documentation, presentation slides, code comments, and demo workflows |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) (version 18 or higher recommended)
+- `npm` (bundled with Node.js)
+
+### Installation & Local Run
 
 ```bash
-# Clone the repo
+# 1. Clone the repository
 git clone https://github.com/cmatver-2/skill-exchange-platform.git
+
+# 2. Navigate to the project directory
 cd skill-exchange-platform
 
-# Install dependencies
+# 3. Install project dependencies
 npm install
 
-# Run the development server
+# 4. Start the local Vite development server
 npm run dev
 ```
 
+Open your browser and navigate to:
+```text
+http://localhost:5173/
+```
+
+### Production Build Verification
+
+```bash
+# Compile and bundle for production
+npm run build
+
+# Preview the production build locally
+npm run preview
+```
+
 ---
 
-## Branching & Workflow
+## 🎬 Step-by-Step Demo Walkthrough (Presentation Guide)
 
-- Work happens in feature branches off `main`, one per module:
-  - `feature/chris-routing-integration`
-  - `feature/dane-skill-search`
-  - `feature/derick-requests-sessions`
-  - `feature/govind-profile-dashboard`
-  - `feature/daniel-admin-home`
-- Open a Pull Request when your module is ready for review.
-- At least one teammate (ideally Chris, for integration) reviews before merging into `main`.
-- Keep `main` always in a working, buildable state.
+When presenting or testing the full platform flow:
+
+1. **Start on the Home Page (`/`)**:
+   - Point out the light-blue hero, live campus metrics, and popular skill cards.
+2. **Switch Active Student in the Navbar**:
+   - Use the header dropdown to switch to **Arjun Nair** (Design student).
+3. **Explore Skills & Find Mutual Matches (`/search`)**:
+   - Observe how **Rahul Mehta** is automatically highlighted with a **"✨ Perfect Exchange Match!"** badge (Arjun teaches Photoshop and wants C++; Rahul teaches C++ and wants Photoshop).
+4. **Inspect a Profile (`/profile/1`)**:
+   - Click **View Profile** to inspect Rahul's teaching skills, learning goals, and verified reviews.
+5. **Send an Exchange Proposal (`/requests`)**:
+   - Use the left form on the Requests page to propose a swap with any student.
+6. **Accept an Incoming Proposal**:
+   - Switch to **Incoming Requests** and click **Accept Exchange →**.
+7. **Schedule the Study Session (`/sessions`)**:
+   - Click **📅 Schedule Session →**, pick a future date and time, and confirm.
+8. **Mark Completed & Leave a Review (`/reviews`)**:
+   - In Sessions, click **Mark as completed**.
+   - Navigate to **Reviews**, select 5 stars, write a comment, and submit. Check the teacher's profile to see the review posted live!
+9. **Admin Console (`/admin`)**:
+   - Switch active user to **Admin User** and review platform-wide analytics, student rosters, and catalogue demand.
 
 ---
 
-<p align="center">Built with ❤️ by Chris, Dane, Derick, Govind & Daniel</p>
+## 🔮 Future Roadmap & Backend / Docker Readiness
+
+SkillSwap is architected cleanly with separation of concerns between components, services/utilities, and state. While it operates completely client-side for presentation simplicity:
+
+- **Docker Containerization**: Easily containerize using a multi-stage Dockerfile:
+  ```dockerfile
+  # Stage 1: Build
+  FROM node:20-alpine AS builder
+  WORKDIR /app
+  COPY package*.json ./
+  RUN npm install
+  COPY . .
+  RUN npm run build
+
+  # Stage 2: Serve
+  FROM nginx:alpine
+  COPY --from=builder /app/dist /usr/share/nginx/html
+  EXPOSE 80
+  CMD ["nginx", "-g", "daemon off;"]
+  ```
+- **Backend API Integration**: The React Context layer (`AppContext.jsx`) can swap local state setters for RESTful endpoints (`fetch('/api/sessions')`, `fetch('/api/requests')`) backed by Node.js/Express, Spring Boot, or FastAPI.
+- **WebRTC Study Rooms**: Transition from Google Meet links to embedded peer-to-peer audio/video calling and shared code editors directly inside the browser.
+
+---
+
+<p align="center">
+  <b>SkillSwap</b> · Built with ❤️ by Team of 7 · Web Programming Project 2026
+</p>

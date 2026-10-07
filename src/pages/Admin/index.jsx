@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { users } from "../../data/users";
 import { skills } from "../../data/skills";
 import { useAppContext } from "../../context/AppContext";
-import "./Admin.css";
 
 function Admin() {
   const { requests, sessions } = useAppContext();
@@ -30,24 +29,18 @@ function Admin() {
 
   const filteredUsers = useMemo(() => {
     const query = userSearch.toLowerCase().trim();
-
-    if (!query) {
-      return studentUsers;
-    }
+    if (!query) return studentUsers;
 
     return studentUsers.filter(
       (user) =>
         user.name.toLowerCase().includes(query) ||
-        user.bio.toLowerCase().includes(query)
+        user.bio?.toLowerCase().includes(query)
     );
   }, [userSearch, studentUsers]);
 
   const filteredSkills = useMemo(() => {
     const query = skillSearch.toLowerCase().trim();
-
-    if (!query) {
-      return skills;
-    }
+    if (!query) return skills;
 
     return skills.filter(
       (skill) =>
@@ -64,6 +57,10 @@ function Admin() {
     (request) => request.status === "accepted"
   ).length;
 
+  const rejectedRequests = requests.filter(
+    (request) => request.status === "rejected"
+  ).length;
+
   const upcomingSessions = sessions.filter(
     (session) => session.status === "upcoming"
   ).length;
@@ -73,237 +70,241 @@ function Admin() {
   ).length;
 
   return (
-    <div className="admin-page">
-      {/* Header */}
-      <section className="admin-header">
-        <div>
-          <p className="admin-eyebrow">ADMIN CONSOLE</p>
-          <h1>Platform overview</h1>
-          <p>
-            Manage users, skills, requests, and learning activity across
-            SkillSwap.
+    <div className="space-y-8">
+      {/* Header (Demo Style) */}
+      <div>
+        <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider">
+          Management & Governance
+        </span>
+        <h1 className="text-3xl font-extrabold text-slate-900 mt-1">
+          Platform Admin Console
+        </h1>
+        <p className="text-sm text-slate-500 mt-1">
+          System monitoring, user oversight, and skill catalogue management.
+        </p>
+      </div>
+
+      {/* Admin Overview Stats (Demo Style) */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <span className="text-xs font-bold text-slate-400">REGISTERED STUDENTS</span>
+          <p className="text-3xl font-extrabold text-slate-900 mt-2">{studentUsers.length}</p>
+          <p className="text-[11px] text-indigo-600 font-semibold mt-1">All verified active</p>
+        </div>
+
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <span className="text-xs font-bold text-slate-400">SKILLS CATALOGUE</span>
+          <p className="text-3xl font-extrabold text-slate-900 mt-2">{skills.length}</p>
+          <p className="text-[11px] text-indigo-600 font-semibold mt-1">Across 5 disciplines</p>
+        </div>
+
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <span className="text-xs font-bold text-slate-400">TOTAL REQUESTS</span>
+          <p className="text-3xl font-extrabold text-slate-900 mt-2">{requests.length}</p>
+          <p className="text-[11px] text-emerald-600 font-semibold mt-1">
+            {acceptedRequests} accepted, {pendingRequests} pending
           </p>
         </div>
-      </section>
 
-      {/* Statistics */}
-      <section className="admin-stats">
-        <div className="admin-stat-card">
-          <span className="stat-label">TOTAL USERS</span>
-          <strong>{users.length}</strong>
-          <span className="stat-detail">
-            {studentUsers.length} students
-          </span>
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <span className="text-xs font-bold text-slate-400">LEARNING SESSIONS</span>
+          <p className="text-3xl font-extrabold text-slate-900 mt-2">{sessions.length}</p>
+          <p className="text-[11px] text-indigo-600 font-semibold mt-1">
+            {upcomingSessions} upcoming, {completedSessions} done
+          </p>
         </div>
+      </div>
 
-        <div className="admin-stat-card">
-          <span className="stat-label">SKILLS</span>
-          <strong>{skills.length}</strong>
-          <span className="stat-detail">In the skill catalogue</span>
-        </div>
-
-        <div className="admin-stat-card">
-          <span className="stat-label">REQUESTS</span>
-          <strong>{requests.length}</strong>
-          <span className="stat-detail">
-            {pendingRequests} pending · {acceptedRequests} accepted
-          </span>
-        </div>
-
-        <div className="admin-stat-card">
-          <span className="stat-label">SESSIONS</span>
-          <strong>{sessions.length}</strong>
-          <span className="stat-detail">
-            {upcomingSessions} upcoming · {completedSessions} completed
-          </span>
-        </div>
-      </section>
-
-      {/* User Management */}
-      <section className="admin-section">
-        <div className="admin-section-header">
+      {/* Users Management Table (Demo Style) */}
+      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+        <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <p className="admin-eyebrow">MANAGEMENT</p>
-            <h2>Users</h2>
-            <p>View students and the skills they teach or want to learn.</p>
+            <h2 className="text-base font-bold text-slate-900">Registered Students</h2>
+            <p className="text-xs text-slate-500">Monitor peer profiles and role access.</p>
           </div>
-
           <input
-            type="search"
-            placeholder="Search users..."
+            type="text"
+            placeholder="Filter users..."
             value={userSearch}
-            onChange={(event) => setUserSearch(event.target.value)}
-            className="admin-search"
+            onChange={(e) => setUserSearch(e.target.value)}
+            className="px-3.5 py-2 rounded-xl border border-slate-200 text-xs bg-slate-50 w-full sm:w-64 outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
 
-        <div className="admin-table-wrapper">
-          <table className="admin-table">
-            <thead>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-slate-50 text-slate-500 border-b border-slate-100 uppercase tracking-wider font-bold">
               <tr>
-                <th>User</th>
-                <th>Role</th>
-                <th>Skills taught</th>
-                <th>Skills wanted</th>
-                <th>Rating</th>
-                <th>Action</th>
+                <th className="py-3 px-6">Student</th>
+                <th className="py-3 px-6">Role</th>
+                <th className="py-3 px-6">Skills Teaching</th>
+                <th className="py-3 px-6">Skills Wanted</th>
+                <th className="py-3 px-6">Rating</th>
+                <th className="py-3 px-6 text-right">Action</th>
               </tr>
             </thead>
-
-            <tbody>
+            <tbody className="divide-y divide-slate-100 font-medium">
               {filteredUsers.map((user) => (
-                <tr key={user.id}>
-                  <td>
-                    <div className="user-cell">
-                      <img src={user.avatar} alt="" />
-                      <div>
-                        <strong>{user.name}</strong>
-                        <span>{user.bio}</span>
-                      </div>
+                <tr key={user.id} className="hover:bg-slate-50/60 transition-colors">
+                  <td className="py-3.5 px-6 flex items-center gap-3">
+                    <img
+                      src={user.avatar}
+                      className="w-8 h-8 rounded-full object-cover border border-slate-200"
+                      alt={user.name}
+                    />
+                    <div>
+                      <span className="font-bold text-slate-900 block">{user.name}</span>
+                      <span className="text-[10px] text-slate-400 line-clamp-1">{user.bio || "Student"}</span>
                     </div>
                   </td>
-
-                  <td>
-                    <span className="role-badge">Student</span>
-                  </td>
-
-                  <td>{user.skillsTaught.length}</td>
-
-                  <td>{user.skillsWanted.length}</td>
-
-                  <td>
-                    <span className="rating">
-                      ★ {user.rating.toFixed(1)}
+                  <td className="py-3.5 px-6">
+                    <span className="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-bold text-[10px] border border-indigo-100">
+                      Student
                     </span>
                   </td>
-
-                  <td>
+                  <td className="py-3.5 px-6 text-slate-600">
+                    {user.skillsTaught.length} skill{user.skillsTaught.length !== 1 ? "s" : ""}
+                  </td>
+                  <td className="py-3.5 px-6 text-slate-600">
+                    {user.skillsWanted.length} goal{user.skillsWanted.length !== 1 ? "s" : ""}
+                  </td>
+                  <td className="py-3.5 px-6 text-amber-500 font-bold">
+                    ★ {user.rating !== null ? user.rating.toFixed(1) : "New"}
+                  </td>
+                  <td className="py-3.5 px-6 text-right">
                     <Link
                       to={`/profile/${user.id}`}
-                      className="table-action"
+                      className="text-indigo-600 hover:text-indigo-800 font-bold hover:underline"
                     >
-                      View
+                      Inspect Profile →
                     </Link>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-
           {filteredUsers.length === 0 && (
-            <div className="empty-table">No users match your search.</div>
+            <div className="p-8 text-center text-xs text-slate-400">
+              No students match your search criteria.
+            </div>
           )}
         </div>
-      </section>
+      </div>
 
-      {/* Skill Management */}
-      <section className="admin-section">
-        <div className="admin-section-header">
+      {/* Skills Catalog Table */}
+      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+        <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <p className="admin-eyebrow">CATALOGUE</p>
-            <h2>Skills</h2>
-            <p>Monitor the skills available for exchange on the platform.</p>
+            <h2 className="text-base font-bold text-slate-900">Skills Catalogue</h2>
+            <p className="text-xs text-slate-500">Monitor all knowledge topics available for exchange.</p>
           </div>
-
           <input
-            type="search"
+            type="text"
             placeholder="Search skills..."
             value={skillSearch}
-            onChange={(event) => setSkillSearch(event.target.value)}
-            className="admin-search"
+            onChange={(e) => setSkillSearch(e.target.value)}
+            className="px-3.5 py-2 rounded-xl border border-slate-200 text-xs bg-slate-50 w-full sm:w-64 outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
 
-        <div className="admin-table-wrapper">
-          <table className="admin-table skill-table">
-            <thead>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-slate-50 text-slate-500 border-b border-slate-100 uppercase tracking-wider font-bold">
               <tr>
-                <th>Skill</th>
-                <th>Category</th>
-                <th>Teachers</th>
-                <th>Learners</th>
-                <th>Action</th>
+                <th className="py-3 px-6">Skill Name</th>
+                <th className="py-3 px-6">Category</th>
+                <th className="py-3 px-6">Active Teachers</th>
+                <th className="py-3 px-6">Active Learners</th>
+                <th className="py-3 px-6 text-right">Action</th>
               </tr>
             </thead>
-
-            <tbody>
+            <tbody className="divide-y divide-slate-100 font-medium">
               {filteredSkills.map((skill) => (
-                <tr key={skill.id}>
-                  <td>
-                    <strong>{skill.name}</strong>
+                <tr key={skill.id} className="hover:bg-slate-50/60 transition-colors">
+                  <td className="py-3.5 px-6 font-bold text-slate-900">
+                    {skill.name}
                   </td>
-
-                  <td>
-                    <span className="category-badge">{skill.category}</span>
+                  <td className="py-3.5 px-6">
+                    <span className="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 font-bold text-[10px] border border-purple-100">
+                      {skill.category}
+                    </span>
                   </td>
-
-                  <td>{getTeacherCount(skill.id)}</td>
-
-                  <td>{getLearnerCount(skill.id)}</td>
-
-                  <td>
+                  <td className="py-3.5 px-6 text-slate-600 font-semibold">
+                    {getTeacherCount(skill.id)} tutors
+                  </td>
+                  <td className="py-3.5 px-6 text-slate-600 font-semibold">
+                    {getLearnerCount(skill.id)} students
+                  </td>
+                  <td className="py-3.5 px-6 text-right">
                     <Link
-                      to={`/search?skill=${skill.id}`}
-                      className="table-action"
+                      to={`/search`}
+                      className="text-indigo-600 hover:text-indigo-800 font-bold hover:underline"
                     >
-                      Explore
+                      Find Peers →
                     </Link>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-
           {filteredSkills.length === 0 && (
-            <div className="empty-table">No skills match your search.</div>
+            <div className="p-8 text-center text-xs text-slate-400">
+              No skills match your search criteria.
+            </div>
           )}
         </div>
-      </section>
+      </div>
 
-      {/* Request / Session overview */}
-      <section className="admin-activity">
-        <div className="activity-card">
-          <p className="admin-eyebrow">REQUEST ACTIVITY</p>
-          <h3>Learning requests</h3>
-
-          <div className="activity-row">
-            <span>Pending</span>
-            <strong>{pendingRequests}</strong>
+      {/* Activity Breakdown Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-bold text-slate-900">Request Pipeline Breakdown</h3>
+            <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">
+              {requests.length} total
+            </span>
           </div>
-
-          <div className="activity-row">
-            <span>Accepted</span>
-            <strong>{acceptedRequests}</strong>
-          </div>
-
-          <div className="activity-row">
-            <span>Rejected</span>
-            <strong>
-              {requests.filter((request) => request.status === "rejected").length}
-            </strong>
-          </div>
-        </div>
-
-        <div className="activity-card">
-          <p className="admin-eyebrow">SESSION ACTIVITY</p>
-          <h3>Learning sessions</h3>
-
-          <div className="activity-row">
-            <span>Upcoming</span>
-            <strong>{upcomingSessions}</strong>
-          </div>
-
-          <div className="activity-row">
-            <span>Completed</span>
-            <strong>{completedSessions}</strong>
-          </div>
-
-          <div className="activity-row">
-            <span>Total</span>
-            <strong>{sessions.length}</strong>
+          <div className="space-y-2 text-xs">
+            <div className="flex justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <span className="text-slate-600 font-medium">Pending Review</span>
+              <strong className="text-amber-600">{pendingRequests}</strong>
+            </div>
+            <div className="flex justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <span className="text-slate-600 font-medium">Accepted Exchanges</span>
+              <strong className="text-emerald-600">{acceptedRequests}</strong>
+            </div>
+            <div className="flex justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <span className="text-slate-600 font-medium">Declined</span>
+              <strong className="text-rose-600">{rejectedRequests}</strong>
+            </div>
           </div>
         </div>
-      </section>
+
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-bold text-slate-900">Tutoring Sessions Breakdown</h3>
+            <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">
+              {sessions.length} total
+            </span>
+          </div>
+          <div className="space-y-2 text-xs">
+            <div className="flex justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <span className="text-slate-600 font-medium">Upcoming Sessions</span>
+              <strong className="text-indigo-600">{upcomingSessions}</strong>
+            </div>
+            <div className="flex justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <span className="text-slate-600 font-medium">Completed Successfully</span>
+              <strong className="text-emerald-600">{completedSessions}</strong>
+            </div>
+            <div className="flex justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <span className="text-slate-600 font-medium">Completion Rate</span>
+              <strong className="text-slate-800">
+                {sessions.length > 0 ? Math.round((completedSessions / sessions.length) * 100) : 0}%
+              </strong>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

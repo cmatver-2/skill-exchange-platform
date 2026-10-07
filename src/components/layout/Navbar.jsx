@@ -1,137 +1,135 @@
 import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
-import "./Navbar.css";
 
 function Navbar() {
   const { currentUser, switchUser, allUsers, requests } = useAppContext();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Pending requests for current user
   const pendingCount = requests.filter(
-    (r) => r.toUserId === currentUser.id && r.status === "pending"
+    (r) => r.toUserId === currentUser?.id && r.status === "pending"
   ).length;
 
   const navItems = [
     { label: "Home", to: "/" },
-    { label: "Find Skills", to: "/search" },
+    { label: "Search Skills", to: "/search" },
     { label: "Dashboard", to: "/dashboard" },
     { label: "Requests", to: "/requests", badge: pendingCount > 0 ? pendingCount : null },
     { label: "Sessions", to: "/sessions" },
+    { label: "Profile", to: `/profile/${currentUser?.id || 1}` },
     { label: "Reviews", to: "/reviews" },
     { label: "Admin", to: "/admin" },
   ];
 
-  const handleUserChange = (e) => {
-    switchUser(Number(e.target.value));
-  };
-
   return (
-    <header className="navbar-wrapper">
-      <div className="navbar-container">
+    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         
-        {/* Brand */}
-        <div className="navbar-brand">
-          <Link to="/" className="brand-link">
-            <span className="brand-icon">🎓</span>
-            <span className="brand-text">
-              Skill<span className="brand-accent">Swap</span>
-            </span>
+        {/* Brand Logo */}
+        <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-2.5">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-md shadow-indigo-200 font-bold text-lg">
+              🎓
+            </div>
+            <div>
+              <span className="text-xl font-extrabold tracking-tight text-slate-900">
+                Skill<span className="text-indigo-600">Swap</span>
+              </span>
+              <span className="hidden sm:inline-block ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+                Peer Exchange
+              </span>
+            </div>
           </Link>
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="navbar-links">
+        <nav className="hidden md:flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl border border-slate-200 overflow-x-auto text-sm font-semibold">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `nav-link ${isActive ? "active" : ""}`
+                `px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                  isActive
+                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20 font-bold"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+                }`
               }
             >
               <span>{item.label}</span>
-              {item.badge && <span className="nav-badge">{item.badge}</span>}
+              {item.badge && (
+                <span className="px-1.5 py-0.2 text-[10px] bg-amber-400 text-slate-950 rounded-full font-bold">
+                  {item.badge}
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>
 
-        {/* User Switcher Pill & Profile */}
-        <div className="navbar-actions">
-          <div className="user-switcher-pill" title="Switch active simulated user">
-            <Link to={`/profile/${currentUser.id}`} className="user-avatar-link">
+        {/* Active User Role Switcher */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
+            <Link to={`/profile/${currentUser?.id}`}>
               <img
-                src={currentUser.avatar}
-                alt={currentUser.name}
-                className="user-avatar-img"
+                src={currentUser?.avatar}
+                alt={currentUser?.name}
+                className="w-7 h-7 rounded-full object-cover border border-white shadow-sm"
               />
             </Link>
-            
-            <div className="user-info-text">
-              <Link to={`/profile/${currentUser.id}`} className="user-name-link">
-                {currentUser.name}
+            <div className="text-left hidden lg:block">
+              <Link to={`/profile/${currentUser?.id}`} className="text-xs font-bold text-slate-900 leading-tight block hover:text-indigo-600">
+                {currentUser?.name}
               </Link>
-              <span className="user-role-label">
-                {currentUser.role === "admin" ? "Platform Admin" : "Active Student"}
-              </span>
+              <p className="text-[10px] text-slate-500 font-medium">
+                {currentUser?.role === "admin" ? "Platform Admin" : "Active Student"}
+              </p>
             </div>
-
-            <div className="user-select-wrapper">
-              <select
-                aria-label="Switch logged-in user"
-                value={currentUser.id}
-                onChange={handleUserChange}
-                className="user-select"
-              >
-                {allUsers.map((u) => (
-                  <option key={u.id} value={u.id}>
-                    {u.name} ({u.role})
-                  </option>
-                ))}
-              </select>
-            </div>
+            <select
+              aria-label="Switch active user"
+              value={currentUser?.id}
+              onChange={(e) => switchUser(Number(e.target.value))}
+              className="text-xs bg-white font-medium border border-slate-300 rounded-lg px-2 py-1 text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+            >
+              {allUsers.map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.role === "admin" ? "🛡️" : "👤"} {u.name.split(" ")[0]} ({u.role})
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* Mobile Hamburger Toggle */}
+          {/* Mobile menu toggle */}
           <button
-            className="mobile-toggle"
-            aria-label="Toggle navigation menu"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200"
+            aria-label="Toggle menu"
           >
-            <span className={`hamburger-bar ${mobileMenuOpen ? "open" : ""}`}></span>
-            <span className={`hamburger-bar ${mobileMenuOpen ? "open" : ""}`}></span>
-            <span className={`hamburger-bar ${mobileMenuOpen ? "open" : ""}`}></span>
+            ☰
           </button>
         </div>
 
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Sub-Navigation */}
       {mobileMenuOpen && (
-        <div className="mobile-menu">
+        <div className="md:hidden flex flex-wrap items-center gap-1.5 px-4 py-3 bg-white border-t border-slate-200 text-xs font-semibold">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               onClick={() => setMobileMenuOpen(false)}
               className={({ isActive }) =>
-                `mobile-nav-link ${isActive ? "active" : ""}`
+                `px-3 py-1.5 rounded-md transition-all ${
+                  isActive
+                    ? "bg-indigo-600 text-white font-bold"
+                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                }`
               }
             >
-              <span>{item.label}</span>
-              {item.badge && <span className="nav-badge">{item.badge}</span>}
+              {item.label}
+              {item.badge && <span className="ml-1 px-1 bg-amber-400 text-slate-900 rounded-full">{item.badge}</span>}
             </NavLink>
           ))}
-
-          <div className="mobile-user-row">
-            <Link
-              to={`/profile/${currentUser.id}`}
-              onClick={() => setMobileMenuOpen(false)}
-              className="mobile-profile-btn"
-            >
-              👤 View My Profile
-            </Link>
-          </div>
         </div>
       )}
     </header>

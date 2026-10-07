@@ -25,31 +25,32 @@ function Home() {
     .sort((a, b) => b.teacherCount - a.teacherCount)
     .slice(0, 6);
 
-  const getCategoryClass = (category) => {
+  const getCategoryBadge = (category) => {
     switch (category?.toLowerCase()) {
       case "programming":
-        return "badge-primary";
+        return "bg-indigo-50 text-indigo-700 border-indigo-200";
       case "design":
-        return "badge-secondary";
+        return "bg-purple-50 text-purple-700 border-purple-200";
       case "music":
-        return "badge-warning";
+        return "bg-amber-50 text-amber-700 border-amber-200";
+      case "language":
+        return "bg-sky-50 text-sky-700 border-sky-200";
       case "soft skills":
-        return "badge-success";
+        return "bg-emerald-50 text-emerald-700 border-emerald-200";
       default:
-        return "badge-neutral";
+        return "bg-slate-100 text-slate-700 border-slate-200";
     }
   };
 
   return (
     <div className="home-page">
-      
       {/* Hero Section */}
       <section className="home-hero">
         <div className="home-hero-container">
           <div className="hero-content">
             <div className="hero-badge">
-              <span>✨</span>
-              <span>Student-to-Student Learning Community</span>
+              <span>🎓</span>
+              <span>Campus Peer Skill Exchange Network</span>
             </div>
 
             <h1 className="hero-title">
@@ -59,7 +60,7 @@ function Home() {
 
             <p className="hero-description">
               SkillSwap connects university students to exchange programming, design, music,
-              and language skills directly with classmates — completely free.
+              languages, and career skills directly with peers — 100% free and collaborative.
             </p>
 
             <div className="hero-actions">
@@ -72,10 +73,10 @@ function Home() {
             </div>
           </div>
 
-          {/* Quick Platform Metrics Floating Box */}
+          {/* Platform Metrics Floating Cards */}
           <div className="hero-metrics-grid">
             <div className="hero-metric-card">
-              <span className="hero-metric-num">{studentUsers.length}</span>
+              <span className="hero-metric-num">{studentUsers.length}+</span>
               <span className="hero-metric-label">Active Students</span>
             </div>
             <div className="hero-metric-card">
@@ -83,7 +84,7 @@ function Home() {
               <span className="hero-metric-label">Skills Offered</span>
             </div>
             <div className="hero-metric-card">
-              <span className="hero-metric-num">{completedSessionsCount || 2}</span>
+              <span className="hero-metric-num">{completedSessionsCount || 4}</span>
               <span className="hero-metric-label">Sessions Completed</span>
             </div>
             <div className="hero-metric-card">
@@ -100,7 +101,7 @@ function Home() {
           <div>
             <span className="page-eyebrow">TOP IN DEMAND</span>
             <h2>Popular Skills to Exchange</h2>
-            <p className="page-subtitle">Discover what your classmates are teaching and learning this semester.</p>
+            <p className="page-subtitle">Discover topics taught by classmates across campus this semester.</p>
           </div>
 
           <Link to="/search" className="btn btn-outline">
@@ -116,7 +117,7 @@ function Home() {
               key={skill.id}
             >
               <div className="skill-card-top">
-                <span className={`badge ${getCategoryClass(skill.category)}`}>
+                <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${getCategoryBadge(skill.category)}`}>
                   {skill.category}
                 </span>
                 <span className="skill-card-arrow">↗</span>
@@ -146,7 +147,7 @@ function Home() {
           <div className="section-heading-centered">
             <span className="page-eyebrow">SIMPLE 3-STEP PROCESS</span>
             <h2>How Skill Exchange Works</h2>
-            <p className="page-subtitle">Exchange knowledge without money or formal classes.</p>
+            <p className="page-subtitle">Trade knowledge bilateral or 1-on-1 without money or formal classes.</p>
           </div>
 
           <div className="steps-grid">
@@ -154,7 +155,7 @@ function Home() {
               <div className="step-number-chip step-1">01</div>
               <h3>Find a Skill & Teacher</h3>
               <p>
-                Browse the catalogue, search for topics you want to learn, and view verified student profiles with ratings.
+                Browse the catalogue, search topics you want to learn, and view verified student profiles with ratings and background.
               </p>
             </div>
 
@@ -162,7 +163,7 @@ function Home() {
               <div className="step-number-chip step-2">02</div>
               <h3>Propose a Knowledge Swap</h3>
               <p>
-                Send an exchange request with what you want to learn and what skills you can teach in return.
+                Send an exchange request highlighting what you want to learn and what skills you can share in return.
               </p>
             </div>
 
@@ -170,7 +171,7 @@ function Home() {
               <div className="step-number-chip step-3">03</div>
               <h3>Meet, Learn & Review</h3>
               <p>
-                Lock in a session date, join Google Meet, complete your 1-on-1 exchange, and leave a star review.
+                Lock in a session time, join Google Meet, complete your 1-on-1 exchange, and leave honest peer feedback.
               </p>
             </div>
           </div>
@@ -183,7 +184,7 @@ function Home() {
           <span className="page-eyebrow cta-eyebrow">READY TO GROW TOGETHER?</span>
           <h2>Your next skill is just one peer conversation away.</h2>
           <p>
-            Join your campus peers in exchanging knowledge. Start browsing or list what you can teach.
+            Join your campus peers in exchanging knowledge. Start browsing or list what you can teach today.
           </p>
 
           <div className="cta-actions">
@@ -196,7 +197,6 @@ function Home() {
           </div>
         </div>
       </section>
-
     </div>
   );
 }
