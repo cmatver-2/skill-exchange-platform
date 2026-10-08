@@ -18,17 +18,15 @@ const AVAILABLE_AVATARS = [
 
 function Profile() {
   const { userId } = useParams();
-  const { currentUser, setCurrentUser, reviews, allUsers } = useAppContext();
+const { currentUser, setCurrentUser, reviews, allUsers } = useAppContext();
 
-  // Find user by URL id or fallback to currentUser
-  const userList = allUsers && allUsers.length > 0 ? allUsers : users;
-  const targetId = userId ? Number(userId) : currentUser?.id;
-  const selectedUser = userList.find((u) => u.id === targetId);
+const userList = allUsers && allUsers.length > 0 ? allUsers : users;
 
-  const user =
-    currentUser && currentUser.id === targetId
-      ? currentUser
-      : selectedUser;
+const selectedUser = userId
+  ? userList.find((u) => u.id === Number(userId))
+  : null;
+
+const user = userId ? selectedUser : currentUser;
 
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState("");

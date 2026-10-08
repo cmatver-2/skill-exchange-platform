@@ -1,6 +1,7 @@
 // src/routes/AppRoutes.jsx
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "../pages/Home";
+import Login from "../pages/Login"
 import SkillSearch from "../pages/SkillSearch";
 import Profile from "../pages/Profile";
 import Dashboard from "../pages/Dashboard";
@@ -13,6 +14,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/search" element={<SkillSearch />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/profile/:userId" element={<Profile />} />
